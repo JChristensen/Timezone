@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------*
- * Arduino Timezone Library v1.0                                        *
+ * Arduino Timezone Library v0.8 (Alpha version)                        *
  * Jack Christensen Mar 2012                                            *
  *                                                                      *
  * This work is licensed under the Creative Commons Attribution-        *
@@ -176,6 +176,10 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr)
     return t;
 }
 
+/*----------------------------------------------------------------------*
+ * Read the daylight and standard time rules from EEPROM at				*
+ * the given address.                                                   *
+ *----------------------------------------------------------------------*/
 void Timezone::readRules(int address)
 {
     eeprom_read_block((void *) &_dst, (void *) address, sizeof(_dst));
@@ -183,10 +187,13 @@ void Timezone::readRules(int address)
     eeprom_read_block((void *) &_std, (void *) address, sizeof(_std));
 }
 
+/*----------------------------------------------------------------------*
+ * Write the daylight and standard time rules to EEPROM at				*
+ * the given address.                                                   *
+ *----------------------------------------------------------------------*/
 void Timezone::writeRules(int address)
 {
     eeprom_write_block((void *) &_dst, (void *) address, sizeof(_dst));
     address += sizeof(_dst);
     eeprom_write_block((void *) &_std, (void *) address, sizeof(_std));
 }
-
