@@ -9,8 +9,8 @@
  * San Francisco, California, 94105, USA.                               *
  *----------------------------------------------------------------------*/ 
 
-#include <Time.h>              //http://www.arduino.cc/playground/Code/Time
-#include <Timezone.h>
+#include <Time.h>        //http://www.arduino.cc/playground/Code/Time
+#include <Timezone.h>    //https://github.com/JChristensen/Timezone
 
 //US Eastern Time Zone (New York, Detroit)
 TimeChangeRule usEdt = {"EDT", Second, Sun, Mar, 2, -240};    //UTC - 4 hours

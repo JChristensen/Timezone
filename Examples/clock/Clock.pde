@@ -9,8 +9,8 @@
  * San Francisco, California, 94105, USA.                               *
  *----------------------------------------------------------------------*/
 
-#include <Time.h>              //http://www.arduino.cc/playground/Code/Time
-#include <Timezone.h>
+#include <Time.h>        //http://www.arduino.cc/playground/Code/Time
+#include <Timezone.h>    //https://github.com/JChristensen/Timezone
 
 //US Eastern Time Zone (New York, Detroit)
 TimeChangeRule usEdt = {"EDT", Second, Sun, Mar, 2, -240};    //UTC - 4 hours
@@ -28,6 +28,7 @@ void setup(void)
 {
     Serial.begin(115200);
     setTime(usEastern.toUTC(compileTime()));
+    //setTime(01, 55, 00, 11, 3, 2012);        //another way to set the time (hr,min,sec,day,mnth,yr)
 }
 
 void loop(void)
@@ -101,4 +102,4 @@ void sPrintDigits(int val)
     if(val < 10) Serial.print('0');
     Serial.print(val, DEC);
 }
-
+

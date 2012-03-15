@@ -34,7 +34,7 @@ To use the library:
 file in the compressed format of your choice (zip or tar.gz) to a convenient
 location on your PC.
 (2) Uncompress the downloaded file. This will result in a folder containing all
-the files for the library, that has a name something like "JChristensen-
+the files for the library, that has a name similar to "JChristensen-
 Timezone-42e98a7".
 (3) Rename the folder to just "Timezone".
 (4) Copy the renamed folder to the Arduino sketchbook\libraries folder.
