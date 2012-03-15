@@ -42,10 +42,10 @@ Timezone-42e98a7".
 --------------------------------------------------------------------------------
 The following example sketches are included with the Timezone library:
 
-OneTimeZone: A simple self-adjusting clock for a single time zone.
+Clock: A simple self-adjusting clock for a single time zone.
 TimeChangeRules may be optionally read from EEPROM.
 
-ManyTimeZones: A self-adjusting clock for multiple time zones.
+WorldClock: A self-adjusting clock for multiple time zones.
 
 WriteRules: A sketch to write TimeChangeRules to EEPROM.
 
@@ -66,22 +66,22 @@ TimeChangeRule myRule = {abbrev, week, dow, month, hour, offset};
 
 Where:
 
-abbrev	is a character string abbreviation for the time zone,
-		it must be no longer than five characters.
+abbrev  is a character string abbreviation for the time zone,
+        it must be no longer than five characters.
 
-week	is the week of the month that the rule starts.
+week    is the week of the month that the rule starts.
 
-dow		is the day of the week that the rule starts.
+dow     is the day of the week that the rule starts.
 
-hour	is the hour in local time that the rule starts.
+hour    is the hour in local time that the rule starts.
 
-offset	is the UTC offset IN MINUTES for the time zone being defined.
+offset  is the UTC offset IN MINUTES for the time zone being defined.
 
 For convenience, the following symbolic names can be used:
 
-week:	First, Second, Third, Fourth, Last
-dow:	Sun, Mon, Tue, Wed, Thu, Fri, Sat
-month:	Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+week:   First, Second, Third, Fourth, Last
+dow:    Sun, Mon, Tue, Wed, Thu, Fri, Sat
+month:  Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
 
 So for the Eastern US time zone, the time change rules could be defined as
 follows:
@@ -101,12 +101,12 @@ There are two ways to declare Timezone objects.
 (1) By first defining TimeChangeRules (as above) and giving the daylight time
 rule and the standard time rule (assuming usEDT and usEST defined as above):
 
-	Timezone usEastern(usEDT, usEST);
+    Timezone usEastern(usEDT, usEST);
 
 (2) By reading rules previously stored in EEPROM. This reads both the daylight
 and standard time rules previously stored at EEPROM address 100:
 
-	Timezone usPacific(100);
+    Timezone usPacific(100);
 
 Note that TimeChangeRules require 12 bytes of storage each, so the the pair of
 rules associated with a Timezone object require 24 bytes total. This could
@@ -122,12 +122,12 @@ library documentation for additional details.
 time_t toLocal(time_t utc);
 Converts the given UTC time to local time, standard or daylight as appropriate.
 Example:
-	time_t eastern, utc;
-	TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
-	TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
-	Timezone usEastern(usEDT, usEST);
-	utc = now();
-	eastern = usEastern.toLocal(utc);
+    time_t eastern, utc;
+    TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
+    TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
+    Timezone usEastern(usEDT, usEST);
+    utc = now();
+    eastern = usEastern.toLocal(utc);
 
 time_t toLocal(time_t utc, TimeChangeRule **tcr);
 Converts the given UTC time to local time, as above, and also returns a pointer
@@ -136,15 +136,15 @@ used, for example, to include the time zone abbreviation as part of a time
 display. The caller must take care not to alter the pointed TimeChangeRule, as
 this will then result in incorrect conversions.
 Example:
-	time_t eastern, utc;
-	TimeChangeRule *tcr;
-	TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
-	TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
-	Timezone usEastern(usEDT, usEST);
-	utc = now();
-	eastern = usEastern.toLocal(utc, &tcr);
-	Serial.print("The time zone is: ");
-	Serial.println(tcr -> abbrev);
+    time_t eastern, utc;
+    TimeChangeRule *tcr;
+    TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
+    TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
+    Timezone usEastern(usEDT, usEST);
+    utc = now();
+    eastern = usEastern.toLocal(utc, &tcr);
+    Serial.print("The time zone is: ");
+    Serial.println(tcr -> abbrev);
 
 boolean utcIsDST(time_t utc);
 boolean locIsDST(time_t local);
@@ -152,14 +152,14 @@ These functions determine whether the given UTC time or the given local time is
 within the daylight saving (summer) time interval, and return true or false
 accordingly.
 Example:
-	if (usEastern.utcIsDst(utc)) {/*do something*/}
+    if (usEastern.utcIsDst(utc)) {/*do something*/}
 
 void readRules(int address);
 void writeRules(int address);
 These functions read or write a Timezone object's two TimeChangeRules from or to
 EEPROM.
 Example:
-	usEastern.writeRules(100);	//write rules beginning at EEPROM address 100
+    usEastern.writeRules(100);  //write rules beginning at EEPROM address 100
 
 time_t toUTC(time_t local);
 Converts the given local time to UTC time.
