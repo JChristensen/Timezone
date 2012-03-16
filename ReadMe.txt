@@ -74,7 +74,7 @@ week    is the week of the month that the rule starts.
 
 dow     is the day of the week that the rule starts.
 
-hour    is the hour in local time that the rule starts.
+hour    is the hour in local time that the rule starts (0-23).
 
 offset  is the UTC offset IN MINUTES for the time zone being defined.
 
@@ -90,9 +90,9 @@ follows:
 TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
 TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
 
-For a time zone that does not change to daylight/summer time, simply code two
-identical rules, only the offset is important, choose any valid value for week,
-dow, month and hour.
+For a time zone that does not change to daylight/summer time, pass the same rule
+twice to the constructor, e.g.:
+    Timezone usAZ(usMST, usMST);
 
 --------------------------------------------------------------------------------
 Declaring Timezone objects
@@ -110,7 +110,7 @@ and standard time rules previously stored at EEPROM address 100:
     Timezone usPacific(100);
 
 Note that TimeChangeRules require 12 bytes of storage each, so the pair of
-rules associated with a Timezone object require 24 bytes total. This could
+rules associated with a Timezone object requires 24 bytes total. This could
 possibly change in future versions of the library. The size of a TimeChangeRule
 can be checked via sizeof(), e.g.: sizeof(usEDT).
 
