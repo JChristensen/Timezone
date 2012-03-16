@@ -1,4 +1,5 @@
-ReadMe file for Arduino Timezone Library v0.8 (Alpha version)
+ReadMe file for Arduino Timezone Library v1.0
+https://github.com/JChristensen/Timezone
 Jack Christensen Mar 2012
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
@@ -9,7 +10,7 @@ Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
 --------------------------------------------------------------------------------
 This library is designed to work in conjunction with the Arduino Time library at
 http://www.arduino.cc/playground/Code/Time. The Time library must be referenced
-in your sketch using #include <Time.h>. This documentation assumes some
+in your sketch with #include <Time.h>. This documentation assumes some
 familiarity with the Time library.
 
 A primary aim of this library is to allow a Real Time Clock (RTC) to be set to
@@ -58,7 +59,7 @@ time starts.
 
 As an example, here in the Eastern US time zone, Eastern Daylight Time (EDT)
 starts on the 2nd Sunday in March at 02:00 local time. Eastern Standard Time
-(EST) starts on the first Sunday in November at 02:00 local time.
+(EST) starts on the 1st Sunday in November at 02:00 local time.
 
 Declare a TimeChangeRule as follows:
 
@@ -108,7 +109,7 @@ and standard time rules previously stored at EEPROM address 100:
 
     Timezone usPacific(100);
 
-Note that TimeChangeRules require 12 bytes of storage each, so the the pair of
+Note that TimeChangeRules require 12 bytes of storage each, so the pair of
 rules associated with a Timezone object require 24 bytes total. This could
 possibly change in future versions of the library. The size of a TimeChangeRule
 can be checked via sizeof(), e.g.: sizeof(usEDT).

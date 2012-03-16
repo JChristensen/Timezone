@@ -1,4 +1,5 @@
 /*----------------------------------------------------------------------*
+ * Timezone library example sketch.                                     *
  * Self-adjusting clock for multiple time zones.                        *
  * Jack Christensen Mar 2012                                            *
  *                                                                      *
@@ -18,7 +19,7 @@
 
 //Australia Eastern Time Zone (Sydney, Melbourne)
 TimeChangeRule aEDT = {"AEDT", First, Sun, Oct, 2, 660};    //UTC + 11 hours
-TimeChangeRule aEST = {"AEST", First, Sun, Apr, 2, 600};    //UTC + 10 hours
+TimeChangeRule aEST = {"AEST", First, Sun, Apr, 3, 600};    //UTC + 10 hours
 Timezone ausET(aEDT, aEST);
 
 //Central European Time (Frankfurt, Paris)
@@ -70,7 +71,7 @@ void loop(void)
     printTime(ausET.toLocal(utc, &tcr), tcr -> abbrev, "Sydney");
     printTime(CE.toLocal(utc, &tcr), tcr -> abbrev, "Paris");
     printTime(UK.toLocal(utc, &tcr), tcr -> abbrev, " London");
-    printTime(utc, "UTC", "");
+    printTime(utc, "UTC", " Universal Coordinated Time");
     printTime(usET.toLocal(utc, &tcr), tcr -> abbrev, " New York");
     printTime(usCT.toLocal(utc, &tcr), tcr -> abbrev, " Chicago");
     printTime(usMT.toLocal(utc, &tcr), tcr -> abbrev, " Denver");

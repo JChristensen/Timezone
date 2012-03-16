@@ -1,4 +1,5 @@
 /*----------------------------------------------------------------------*
+ * Timezone library example sketch.                                     *
  * Write TimeChangeRules to EEPROM.                                     *
  * Jack Christensen Mar 2012                                            *
  *                                                                      *

@@ -1,5 +1,7 @@
 /*----------------------------------------------------------------------*
+ * Timezone library example sketch.                                     *
  * Self-adjusting clock for one time zone.                              *
+ * TimeChangeRules can be hard-coded or read from EEPROM, see comments. *
  * Jack Christensen Mar 2012                                            *
  *                                                                      *
  * This work is licensed under the Creative Commons Attribution-        *

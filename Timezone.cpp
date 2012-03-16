@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------*
- * Arduino Timezone Library v0.8 (Alpha version)                        *
+ * Arduino Timezone Library v1.0                                        *
  * Jack Christensen Mar 2012                                            *
  *                                                                      *
  * This work is licensed under the Creative Commons Attribution-        *
