@@ -15,13 +15,13 @@
 #include <Timezone.h>    //https://github.com/JChristensen/Timezone
 
 //US Eastern Time Zone (New York, Detroit)
-TimeChangeRule usEdt = {"EDT", Second, Sun, Mar, 2, -240};    //UTC - 4 hours
-TimeChangeRule usEst = {"EST", First, Sun, Nov, 2, -300};     //UTC - 5 hours
-Timezone usEastern(usEdt, usEst);
+TimeChangeRule myDST = {"EDT", Second, Sun, Mar, 2, -240};    //Daylight time = UTC - 4 hours
+TimeChangeRule mySTD = {"EST", First, Sun, Nov, 2, -300};     //Standard time = UTC - 5 hours
+Timezone myTZ(myDST, mySTD);
 
 //If TimeChangeRules are already stored in EEPROM, comment out the three
 //lines above and uncomment the line below.
-//Timezone usEastern(100);    //assumes rules stored at EEPROM address 100
+//Timezone myTZ(100);       //assumes rules stored at EEPROM address 100
 
 TimeChangeRule *tcr;        //pointer to the time change rule, use to get TZ abbrev
 time_t utc, local;
@@ -29,7 +29,7 @@ time_t utc, local;
 void setup(void)
 {
     Serial.begin(115200);
-    setTime(usEastern.toUTC(compileTime()));
+    setTime(myTZ.toUTC(compileTime()));
     //setTime(01, 55, 00, 11, 3, 2012);        //another way to set the time (hr,min,sec,day,mnth,yr)
 }
 
@@ -38,7 +38,7 @@ void loop(void)
     Serial.println();
     utc = now();
     printTime(utc, "UTC");
-    local = usEastern.toLocal(utc, &tcr);
+    local = myTZ.toLocal(utc, &tcr);
     printTime(local, tcr -> abbrev);
     delay(10000);
 }
