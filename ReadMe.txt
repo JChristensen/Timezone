@@ -31,12 +31,11 @@ write its TimeChangeRules to EEPROM, or read them from EEPROM. Multiple time
 zones can be represented by declaring multiple Timezone objects.
 
 To use the library:
-(1) Go to https://github.com/JChristensen/Timezone/downloads and download the
-file in the compressed format of your choice (zip or tar.gz) to a convenient
-location on your PC.
+(1) Go to https://github.com/JChristensen/Timezone and click the ZIP button to
+download the repository as a ZIP file to a convenient location on your PC.
 (2) Uncompress the downloaded file. This will result in a folder containing all
-the files for the library, that has a name similar to "JChristensen-
-Timezone-42e98a7".
+the files for the library, that has a name that includes the branch name,
+for example "Timezone-master".
 (3) Rename the folder to just "Timezone".
 (4) Copy the renamed folder to the Arduino sketchbook\libraries folder.
 
