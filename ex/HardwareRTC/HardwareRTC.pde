@@ -88,4 +88,3 @@ void sPrintDigits(int val)
     if(val < 10) Serial.print('0');
     Serial.print(val, DEC);
 }
-
