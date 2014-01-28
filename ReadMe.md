@@ -135,7 +135,7 @@ These functions determine whether a given UTC time or a given local time is with
 #####Returns
 true or false *(boolean)*
 #####Example
-`if (usEastern.utcIsDst(utc)) { /*do something*/ }`
+`if (usEastern.utcIsDST(utc)) { /*do something*/ }`
 
 ###void readRules(int address);
 ###void writeRules(int address);
