@@ -1,0 +1,10 @@
+{
+  "name": "Arduino-Timezone",
+  "keywords": "time, zone",
+  "description": "Arduino library to facilitate time zone conversions and automatic daylight saving (summer) time adjustments",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/JChristensen/Timezone.git"
+  }
+}
