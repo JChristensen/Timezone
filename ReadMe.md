@@ -6,7 +6,7 @@ Jack Christensen Mar 2012
 ![CC BY-SA](http://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-sa.png)
 
 ##Introduction
-The **Timezone** library is designed to work in conjunction with the [Arduino Time library](http://www.arduino.cc/playground/Code/Time).  The Time library must be installed and referenced in your sketch with `#include <Time.h>`.  This documentation assumes some familiarity with the Time library.
+The **Timezone** library is designed to work in conjunction with the [Arduino Time library](http://www.arduino.cc/playground/Code/Time).  The Time library must be installed and referenced in your sketch with `#include <TimeLib.h>`.  This documentation assumes some familiarity with the Time library.
 
 The primary aim of the **Timezone** library is to convert Universal Coordinated Time (UTC) to the correct local time, whether it is daylight saving time (a.k.a. summer time) or standard time. The time source could be a GPS receiver, an NTP server, or a Real-Time Clock (RTC) set to UTC.  But whether a hardware RTC or other time source is even present is immaterial; although the Time library can function as a software RTC without additional hardware, its accuracy is dependent on the accuracy of the microcontroller's system clock.
 
@@ -77,7 +77,7 @@ By reading rules previously stored in EEPROM.  This reads both the daylight and 
 Note that **TimeChangeRule**s require 12 bytes of storage each, so the pair of rules associated with a Timezone object requires 24 bytes total.  This could possibly change in future versions of the library.  The size of a **TimeChangeRule** can be checked with `sizeof(usEDT)`.
 
 ##Timezone library methods
-Note that the `time_t` data type is defined by the Arduino Time library <Time.h>. See the [Time library documentation](http://www.arduino.cc/playground/Code/Time) for additional details.
+Note that the `time_t` data type is defined by the Arduino Time library <TimeLib.h>. See the [Time library documentation](http://www.arduino.cc/playground/Code/Time) for additional details.
 
 ###time_t toLocal(time_t utc);
 #####Description
