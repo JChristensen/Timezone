@@ -16,7 +16,7 @@
  *----------------------------------------------------------------------*/
 
 #include <DS1307RTC.h>   //http://www.arduino.cc/playground/Code/Time
-#include <Time.h>        //http://www.arduino.cc/playground/Code/Time
+#include <TimeLib.h>     //http://www.arduino.cc/playground/Code/Time
 #include <Timezone.h>    //https://github.com/JChristensen/Timezone
 #include <Wire.h>        //http://arduino.cc/en/Reference/Wire (supplied with the Arduino IDE)
 
