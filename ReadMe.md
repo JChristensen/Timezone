@@ -1,4 +1,4 @@
-#Arduino Timezone Library v1.0
+#Arduino Timezone Library v1.0.0
 https://github.com/JChristensen/Timezone  
 ReadMe file  
 Jack Christensen Mar 2012  

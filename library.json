@@ -1,0 +1,18 @@
+{
+  "name": "TimeZone",
+  "keywords": "time zone, time, UTC, clock",
+  "description": "The primary aim of the Timezone library is to convert Universal Coordinated Time (UTC) to the correct local time, whether it is daylight saving time (a.k.a. summer time) or standard time.",
+  "url": "https://github.com/JChristensen/Timezone",
+  "authors":
+  [
+    {
+      "name": "Jack Christensen"
+    }
+  ],
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/JChristensen/Timezone.git"
+  },
+  "frameworks": "arduino"
+}
