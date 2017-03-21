@@ -111,14 +111,16 @@ time_t Timezone::toUTC(time_t local)
  * Determine whether the given UTC time_t is within the DST interval    *
  * or the Standard time interval.                                       *
  *----------------------------------------------------------------------*/
-boolean Timezone::utcIsDST(time_t utc)
+bool Timezone::utcIsDST(time_t utc)
 {
     //recalculate the time change points if needed
     if (year(utc) != year(_dstUTC)) calcTimeChanges(year(utc));
 
-    if (_stdUTC > _dstUTC)    //northern hemisphere
+    if (_stdUTC == _dstUTC)         //daylight time not observed in this tz
+        return false;
+    else if (_stdUTC > _dstUTC)     //northern hemisphere
         return (utc >= _dstUTC && utc < _stdUTC);
-    else                      //southern hemisphere
+    else                            //southern hemisphere
         return !(utc >= _stdUTC && utc < _dstUTC);
 }
 
@@ -126,14 +128,16 @@ boolean Timezone::utcIsDST(time_t utc)
  * Determine whether the given Local time_t is within the DST interval  *
  * or the Standard time interval.                                       *
  *----------------------------------------------------------------------*/
-boolean Timezone::locIsDST(time_t local)
+bool Timezone::locIsDST(time_t local)
 {
     //recalculate the time change points if needed
     if (year(local) != year(_dstLoc)) calcTimeChanges(year(local));
 
-    if (_stdLoc > _dstLoc)    //northern hemisphere
+    if (_stdUTC == _dstUTC)         //daylight time not observed in this tz
+        return false;
+    else if (_stdLoc > _dstLoc)     //northern hemisphere
         return (local >= _dstLoc && local < _stdLoc);
-    else                      //southern hemisphere
+    else                            //southern hemisphere
         return !(local >= _stdLoc && local < _dstLoc);
 }
 
