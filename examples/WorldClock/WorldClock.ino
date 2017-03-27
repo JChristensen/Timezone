@@ -83,10 +83,9 @@ void loop(void)
 //Function to return the compile date and time as a time_t value
 time_t compileTime(void)
 {
-#define FUDGE 25        //fudge factor to allow for compile time (seconds, YMMV)
-
+    const time_t FUDGE(25);        //fudge factor to allow for compile time (seconds, YMMV)
     char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
-    char chMon[3], *m;
+    char chMon[4], *m;
     int d, y;
     tmElements_t tm;
     time_t t;
