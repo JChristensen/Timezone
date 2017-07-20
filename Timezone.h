@@ -31,7 +31,7 @@ struct TimeChangeRule
     uint8_t week;      //First, Second, Third, Fourth, or Last week of the month
     uint8_t dow;       //day of week, 1=Sun, 2=Mon, ... 7=Sat
     uint8_t month;     //1=Jan, 2=Feb, ... 12=Dec
-    uint8_t hour;      //0-23
+    int8_t hour;       //0-23 (or -128 to 127 to support rules like 2am on Friday before last Sunday of the month)
     int offset;        //offset from UTC in minutes
 };
         
