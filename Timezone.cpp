@@ -173,13 +173,14 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr)
         w = 1;               //and treat as first week of next month, subtract 7 days later
     }
 
-    tm.Hour = r.hour;
+    tm.Hour = 0;
     tm.Minute = 0;
     tm.Second = 0;
     tm.Day = 1;
     tm.Month = m;
     tm.Year = yr - 1970;
     t = makeTime(tm);        //first day of the month, or first day of next month for "Last" rules
+    t += r.hour * SECS_PER_HOUR;
     t += (7 * (w - 1) + (r.dow - weekday(t) + 7) % 7) * SECS_PER_DAY;
     if (r.week == 0) t -= 7 * SECS_PER_DAY;    //back up a week if this is a "Last" rule
     return t;
