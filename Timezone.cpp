@@ -185,9 +185,22 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr)
     return t;
 }
 
+/*----------------------------------------------------------------------*
+ * Read or update the daylight and standard time rules from RAM.        *
+ *----------------------------------------------------------------------*/
+void Timezone::readRules(TimeChangeRule dstStart, TimeChangeRule stdStart)
+{
+    _dst = dstStart;
+    _std = stdStart;
+    _dstUTC = 0;    // force calcTimeChanges() at next conversion call
+    _stdUTC = 0;
+    _dstLoc = 0;
+    _stdLoc = 0;
+}
+
 #ifdef __AVR__
 /*----------------------------------------------------------------------*
- * Read the daylight and standard time rules from EEPROM at				*
+ * Read the daylight and standard time rules from EEPROM at             *
  * the given address.                                                   *
  *----------------------------------------------------------------------*/
 void Timezone::readRules(int address)
@@ -195,10 +208,14 @@ void Timezone::readRules(int address)
     eeprom_read_block((void *) &_dst, (void *) address, sizeof(_dst));
     address += sizeof(_dst);
     eeprom_read_block((void *) &_std, (void *) address, sizeof(_std));
+    _dstUTC = 0;    // force calcTimeChanges() at next conversion call
+    _stdUTC = 0;
+    _dstLoc = 0;
+    _stdLoc = 0;
 }
 
 /*----------------------------------------------------------------------*
- * Write the daylight and standard time rules to EEPROM at				*
+ * Write the daylight and standard time rules to EEPROM at              *
  * the given address.                                                   *
  *----------------------------------------------------------------------*/
 void Timezone::writeRules(int address)

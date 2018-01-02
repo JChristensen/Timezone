@@ -8,9 +8,12 @@
  * letter to Creative Commons, 171 Second Street, Suite 300,            *
  * San Francisco, California, 94105, USA.                               *
  *----------------------------------------------------------------------*/ 
- 
-#ifndef Timezone_h
-#define Timezone_h
+
+#ifndef ARDUINO_ARCH_AVR
+    #error "The Timezone library only supports the AVR architecture."
+#else
+#ifndef TIMEZONE_H_INCLUDED
+#define TIMEZONE_H_INCLUDED
 #if ARDUINO >= 100
 #include <Arduino.h> 
 #else
@@ -45,6 +48,7 @@ class Timezone
         time_t toUTC(time_t local);
         bool utcIsDST(time_t utc);
         bool locIsDST(time_t local);
+        void readRules(TimeChangeRule dstStart, TimeChangeRule stdStart);
         void readRules(int address);
         void writeRules(int address);
 
@@ -58,4 +62,5 @@ class Timezone
         time_t _dstLoc;         //dst start for given/current year, given in local time
         time_t _stdLoc;         //std time start for given/current year, given in local time
 };
+#endif
 #endif
