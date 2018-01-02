@@ -8,26 +8,22 @@
  *                                                                      *
  * Jack Christensen Aug 2012                                            *
  *                                                                      *
- * This work is licensed under the Creative Commons Attribution-        *
- * ShareAlike 3.0 Unported License. To view a copy of this license,     *
- * visit http://creativecommons.org/licenses/by-sa/3.0/ or send a       *
- * letter to Creative Commons, 171 Second Street, Suite 300,            *
- * San Francisco, California, 94105, USA.                               *
+ * CC BY-SA 4.0: This work is licensed under the Creative Commons       *
+ * Attribution-ShareAlike 4.0 International License,                    *
+ * https://creativecommons.org/licenses/by-sa/4.0/                      *
  *----------------------------------------------------------------------*/
 
-#include <DS1307RTC.h>   //http://www.arduino.cc/playground/Code/Time
-#include <Time.h>        //http://www.arduino.cc/playground/Code/Time
-#include <Timezone.h>    //https://github.com/JChristensen/Timezone
-#include <Wire.h>        //http://arduino.cc/en/Reference/Wire (supplied with the Arduino IDE)
+#include <DS1307RTC.h>   // https://github.com/PaulStoffregen/DS1307RTC
+#include <Timezone.h>    // https://github.com/JChristensen/Timezone
 
-//US Eastern Time Zone (New York, Detroit)
+// US Eastern Time Zone (New York, Detroit)
 TimeChangeRule myDST = {"EDT", Second, Sun, Mar, 2, -240};    //Daylight time = UTC - 4 hours
 TimeChangeRule mySTD = {"EST", First, Sun, Nov, 2, -300};     //Standard time = UTC - 5 hours
 Timezone myTZ(myDST, mySTD);
 
-//If TimeChangeRules are already stored in EEPROM, comment out the three
-//lines above and uncomment the line below.
-//Timezone myTZ(100);       //assumes rules stored at EEPROM address 100
+// If TimeChangeRules are already stored in EEPROM, comment out the three
+// lines above and uncomment the line below.
+// Timezone myTZ(100);       //assumes rules stored at EEPROM address 100
 
 TimeChangeRule *tcr;        //pointer to the time change rule, use to get TZ abbrev
 time_t utc, local;
@@ -36,10 +32,10 @@ void setup(void)
 {
     Serial.begin(115200);
     setSyncProvider(RTC.get);   // the function to get the time from the RTC
-    if(timeStatus()!= timeSet) 
+    if(timeStatus()!= timeSet)
         Serial.println("Unable to sync with the RTC");
     else
-        Serial.println("RTC has set the system time");      
+        Serial.println("RTC has set the system time");
 }
 
 void loop(void)
@@ -52,7 +48,7 @@ void loop(void)
     delay(10000);
 }
 
-//Function to print time with time zone
+// Function to print time with time zone
 void printTime(time_t t, char *tz)
 {
     sPrintI00(hour(t));
@@ -71,8 +67,8 @@ void printTime(time_t t, char *tz)
     Serial.println();
 }
 
-//Print an integer in "00" format (with leading zero).
-//Input value assumed to be between 0 and 99.
+// Print an integer in "00" format (with leading zero).
+// Input value assumed to be between 0 and 99.
 void sPrintI00(int val)
 {
     if (val < 10) Serial.print('0');
@@ -80,8 +76,8 @@ void sPrintI00(int val)
     return;
 }
 
-//Print an integer in ":00" format (with leading zero).
-//Input value assumed to be between 0 and 99.
+// Print an integer in ":00" format (with leading zero).
+// Input value assumed to be between 0 and 99.
 void sPrintDigits(int val)
 {
     Serial.print(':');

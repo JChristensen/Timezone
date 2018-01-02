@@ -1,17 +1,11 @@
 /*----------------------------------------------------------------------*
- * Arduino Timezone Library v1.0                                        *
+ * Arduino Timezone Library                                             *
  * Jack Christensen Mar 2012                                            *
  *                                                                      *
- * This work is licensed under the Creative Commons Attribution-        *
- * ShareAlike 3.0 Unported License. To view a copy of this license,     *
- * visit http://creativecommons.org/licenses/by-sa/3.0/ or send a       *
- * letter to Creative Commons, 171 Second Street, Suite 300,            *
- * San Francisco, California, 94105, USA.                               *
+ * "Arduino Timezone Library" by Jack Christensen is licensed under     *
+ * CC BY-SA 4.0, http://creativecommons.org/licenses/by-sa/4.0/         *
  *----------------------------------------------------------------------*/ 
 
-#ifndef ARDUINO_ARCH_AVR
-    #error "The Timezone library only supports the AVR architecture."
-#else
 #ifndef TIMEZONE_H_INCLUDED
 #define TIMEZONE_H_INCLUDED
 #if ARDUINO >= 100
@@ -19,23 +13,23 @@
 #else
 #include <WProgram.h> 
 #endif
-#include <Time.h>              //http://www.arduino.cc/playground/Code/Time
+#include <TimeLib.h>    // https://github.com/PaulStoffregen/Time
 
-//convenient constants for dstRules
+// convenient constants for dstRules
 enum week_t {Last, First, Second, Third, Fourth}; 
 enum dow_t {Sun=1, Mon, Tue, Wed, Thu, Fri, Sat};
 enum month_t {Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
 
-//structure to describe rules for when daylight/summer time begins,
-//or when standard time begins.
+// structure to describe rules for when daylight/summer time begins,
+// or when standard time begins.
 struct TimeChangeRule
 {
-    char abbrev[6];    //five chars max
-    uint8_t week;      //First, Second, Third, Fourth, or Last week of the month
-    uint8_t dow;       //day of week, 1=Sun, 2=Mon, ... 7=Sat
-    uint8_t month;     //1=Jan, 2=Feb, ... 12=Dec
-    uint8_t hour;      //0-23
-    int offset;        //offset from UTC in minutes
+    char abbrev[6];    // five chars max
+    uint8_t week;      // First, Second, Third, Fourth, or Last week of the month
+    uint8_t dow;       // day of week, 1=Sun, 2=Mon, ... 7=Sat
+    uint8_t month;     // 1=Jan, 2=Feb, ... 12=Dec
+    uint8_t hour;      // 0-23
+    int offset;        // offset from UTC in minutes
 };
         
 class Timezone
@@ -55,12 +49,11 @@ class Timezone
     private:
         void calcTimeChanges(int yr);
         time_t toTime_t(TimeChangeRule r, int yr);
-        TimeChangeRule _dst;    //rule for start of dst or summer time for any year
-        TimeChangeRule _std;    //rule for start of standard time for any year
-        time_t _dstUTC;         //dst start for given/current year, given in UTC
-        time_t _stdUTC;         //std time start for given/current year, given in UTC
-        time_t _dstLoc;         //dst start for given/current year, given in local time
-        time_t _stdLoc;         //std time start for given/current year, given in local time
+        TimeChangeRule m_dst;   // rule for start of dst or summer time for any year
+        TimeChangeRule m_std;   // rule for start of standard time for any year
+        time_t m_dstUTC;        // dst start for given/current year, given in UTC
+        time_t m_stdUTC;        // std time start for given/current year, given in UTC
+        time_t m_dstLoc;        // dst start for given/current year, given in local time
+        time_t m_stdLoc;        // std time start for given/current year, given in local time
 };
-#endif
 #endif
