@@ -118,8 +118,8 @@ Serial.print("The time zone is: ");
 Serial.println(tcr -> abbrev);
 ```
 
-### boolean utcIsDST(time_t utc);
-### boolean locIsDST(time_t local);
+### bool utcIsDST(time_t utc);
+### bool locIsDST(time_t local);
 ##### Description
 These functions determine whether a given UTC time or a given local time is within the daylight saving (summer) time interval, and return true or false accordingly.
 ##### Syntax
@@ -129,7 +129,7 @@ These functions determine whether a given UTC time or a given local time is with
 ***utc:*** Universal Coordinated Time *(time_t)*  
 ***local:*** Local Time *(time_t)*  
 ##### Returns
-true or false *(boolean)*
+true or false *(bool)*
 ##### Example
 `if (usEastern.utcIsDST(utc)) { /*do something*/ }`
 
@@ -147,11 +147,11 @@ None.
 ##### Example
 `usEastern.writeRules(100);  //write rules beginning at EEPROM address 100`
 
-### void readRules(TimeChangeRule dstStart, TimeChangeRule stdStart);
+### void setRules(TimeChangeRule dstStart, TimeChangeRule stdStart);
 ##### Description
 This function reads or updates the daylight and standard time rules from RAM. Can be used to change TimeChangeRules dynamically while a sketch runs.
 ##### Syntax
-`myTZ.readRules(dstStart, stdStart);`  
+`myTZ.setRules(dstStart, stdStart);`  
 ##### Parameters
 ***dstStart:*** A TimeChangeRule denoting the start of daylight saving (summer) time.  
 ***stdStart:*** A TimeChangeRule denoting the start of standard time.
@@ -163,7 +163,7 @@ TimeChangeRule EDT = {"EDT", Second, Sun, Mar, 2, -240};
 TimeChangeRule EST = {"EST", First, Sun, Nov, 2, -300};
 Timezone ET(EDT, EST);
 ...
-tz.readRules(EDT, EST);
+tz.setRules(EDT, EST);
 
 ```
 ### time_t toUTC(time_t local);

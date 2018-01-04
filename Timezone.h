@@ -15,7 +15,7 @@
 #endif
 #include <TimeLib.h>    // https://github.com/PaulStoffregen/Time
 
-// convenient constants for dstRules
+// convenient constants for TimeChangeRules
 enum week_t {Last, First, Second, Third, Fourth}; 
 enum dow_t {Sun=1, Mon, Tue, Wed, Thu, Fri, Sat};
 enum month_t {Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
@@ -42,7 +42,7 @@ class Timezone
         time_t toUTC(time_t local);
         bool utcIsDST(time_t utc);
         bool locIsDST(time_t local);
-        void readRules(TimeChangeRule dstStart, TimeChangeRule stdStart);
+        void setRules(TimeChangeRule dstStart, TimeChangeRule stdStart);
         void readRules(int address);
         void writeRules(int address);
 

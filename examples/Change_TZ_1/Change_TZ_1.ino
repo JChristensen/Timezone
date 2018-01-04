@@ -80,7 +80,7 @@ void changeTZ()
     stdRule.offset = stdOffsets[tzIndex];
     strcpy(dstRule.abbrev, dstNames[tzIndex]);
     strcpy(stdRule.abbrev, stdNames[tzIndex]);
-    tz.readRules(dstRule, stdRule);
+    tz.setRules(dstRule, stdRule);
 }
 
 void printDateTime(time_t t)
