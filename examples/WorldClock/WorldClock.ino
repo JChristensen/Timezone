@@ -1,16 +1,13 @@
-/*----------------------------------------------------------------------*
- * Timezone library example sketch.                                     *
- * Self-adjusting clock for multiple time zones.                        *
- * Jack Christensen Mar 2012                                            *
- *                                                                      *
- * Sources for DST rule information:                                    *
- * http://www.timeanddate.com/worldclock/                               *
- * http://home.tiscali.nl/~t876506/TZworld.html                         *
- *                                                                      *
- * CC BY-SA 4.0: This work is licensed under the Creative Commons       *
- * Attribution-ShareAlike 4.0 International License,                    *
- * https://creativecommons.org/licenses/by-sa/4.0/                      *
- *----------------------------------------------------------------------*/
+// Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and
+// licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
+//
+// Arduino Timezone Library example sketch.
+// Self-adjusting clock for multiple time zones.
+// Jack Christensen Mar 2012
+//
+// Sources for DST rule information:
+// http://www.timeanddate.com/worldclock/
+// http://home.tiscali.nl/~t876506/TZworld.html
 
 #include <Timezone.h>    // https://github.com/JChristensen/Timezone
 

@@ -1,17 +1,14 @@
-/*----------------------------------------------------------------------*
- * Timezone library example sketch.                                     *
- * Self-adjusting clock for one time zone using an external real-time   *
- * clock, either a DS1307 or DS3231 (e.g. Chronodot).                   *
- * Assumes the RTC is set to UTC.                                       *
- * TimeChangeRules can be hard-coded or read from EEPROM, see comments. *
- * Check out the Chronodot at http://www.macetech.com/store/            *
- *                                                                      *
- * Jack Christensen Aug 2012                                            *
- *                                                                      *
- * CC BY-SA 4.0: This work is licensed under the Creative Commons       *
- * Attribution-ShareAlike 4.0 International License,                    *
- * https://creativecommons.org/licenses/by-sa/4.0/                      *
- *----------------------------------------------------------------------*/
+// Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and
+// licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
+//
+// Arduino Timezone Library example sketch.
+// Self-adjusting clock for one time zone using an external real-time
+// clock, either a DS1307 or DS3231 (e.g. Chronodot).
+// Assumes the RTC is set to UTC.
+// TimeChangeRules can be hard-coded or read from EEPROM, see comments.
+// Check out the Chronodot at http://www.macetech.com/store/
+//
+// Jack Christensen Aug 2012
 
 #include <DS1307RTC.h>   // https://github.com/PaulStoffregen/DS1307RTC
 #include <Timezone.h>    // https://github.com/JChristensen/Timezone

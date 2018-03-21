@@ -1,9 +1,18 @@
 # Arduino Timezone Library
 https://github.com/JChristensen/Timezone  
 README file  
-Jack Christensen Mar 2012  
+Jack Christensen  
+Mar 2012  
 
-![CC BY-SA](http://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-sa.png)
+## License
+Arduino Timezone Library Copyright (C) 2018 Jack Christensen GNU GPL v3.0
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/gpl.html>
 
 ## Introduction
 The **Timezone** library is designed to work in conjunction with the [Arduino Time library](https://github.com/PaulStoffregen/Time), which must also be installed on your system. This documentation assumes some familiarity with the Time library.

@@ -1,13 +1,10 @@
-/*----------------------------------------------------------------------*
- * Timezone library example sketch.                                     *
- * Self-adjusting clock for one time zone.                              *
- * TimeChangeRules can be hard-coded or read from EEPROM, see comments. *
- * Jack Christensen Mar 2012                                            *
- *                                                                      *
- * CC BY-SA 4.0: This work is licensed under the Creative Commons       *
- * Attribution-ShareAlike 4.0 International License,                    *
- * https://creativecommons.org/licenses/by-sa/4.0/                      *
- *----------------------------------------------------------------------*/
+// Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and
+// licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
+//
+// Arduino Timezone Library example sketch.
+// Self-adjusting clock for one time zone.
+// TimeChangeRules can be hard-coded or read from EEPROM, see comments.
+// Jack Christensen Mar 2012
 
 #include <Timezone.h>    //https://github.com/JChristensen/Timezone
 

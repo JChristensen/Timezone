@@ -1,4 +1,7 @@
-// Timezone library example sketch.
+// Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and
+// licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
+//
+// Arduino Timezone Library example sketch.
 // Demonstrates changing timezone "on the fly".
 // Uses a pushbutton switch to change between the four continental US time zones.
 // The current timezone setting is saved in EEPROM so it is remembered if
