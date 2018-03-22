@@ -11,7 +11,9 @@
 #ifdef __AVR__
     #include <avr/eeprom.h>
 #endif
-
+#ifdef ESP8266
+    #include <EEPROM.h>
+#endif
 /*----------------------------------------------------------------------*
  * Create a Timezone object from the given time change rules.           *
  *----------------------------------------------------------------------*/
@@ -21,7 +23,7 @@ Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
     m_std = stdStart;
 }
 
-#ifdef __AVR__
+#if defined(__AVR__) or defined(ESP8266)
 /*----------------------------------------------------------------------*
  * Create a Timezone object from time change rules stored in EEPROM     *
  * at the given address.                                                *
@@ -197,6 +199,40 @@ void Timezone::setRules(TimeChangeRule dstStart, TimeChangeRule stdStart)
     m_dstLoc = 0;
     m_stdLoc = 0;
 }
+
+#ifdef ESP8266
+
+/*----------------------------------------------------------------------*
+ * Read the daylight and standard time rules from EEPROM at             *
+ * the given address.                                                   *
+ *----------------------------------------------------------------------*/
+void Timezone::readRules(int address)
+{
+    EEPROM.begin(512);
+    EEPROM.get(address, m_dst);
+    EEPROM.get(address+ sizeof(m_dst), m_std);
+    EEPROM.end();
+	
+    m_dstUTC = 0;
+    m_stdUTC = 0;
+    m_dstLoc = 0;
+    m_stdLoc = 0;
+}
+
+/*----------------------------------------------------------------------*
+ * Write the daylight and standard time rules to EEPROM at              *
+ * the given address.                                                   *
+ *----------------------------------------------------------------------*/
+void Timezone::writeRules(int address)
+{
+    EEPROM.begin(512);
+    EEPROM.put(address, m_dst);
+    EEPROM.put(address+ sizeof(m_dst), m_std);
+    EEPROM.commit();
+    EEPROM.end();
+}
+
+#endif
 
 #ifdef __AVR__
 /*----------------------------------------------------------------------*
