@@ -211,7 +211,6 @@ void Timezone::readRules(int address)
     EEPROM.begin(512);
     EEPROM.get(address, m_dst);
     EEPROM.get(address+ sizeof(m_dst), m_std);
-    EEPROM.commit();
     EEPROM.end();
 	
     m_dstUTC = 0;
