@@ -23,7 +23,7 @@ Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
     m_std = stdStart;
 }
 
-#ifdef __AVR__
+#if defined(__AVR__) or defined(ESP8266)
 /*----------------------------------------------------------------------*
  * Create a Timezone object from time change rules stored in EEPROM     *
  * at the given address.                                                *
