@@ -8,14 +8,12 @@
 //
 // Jack Christensen 02Jan2018
 
-#include <Button.h>             // http://github.com/JChristensen/Button
+#include <JC_Button.h>          // http://github.com/JChristensen/JC_Button
 #include <Streaming.h>          // http://arduiniana.org/libraries/streaming/
 #include <Timezone.h>           // http://github.com/JChristensen/Timezone
 
-const uint8_t BUTTON_PIN(9);    // connect a button from this pin to ground
-const bool PULLUP(true), INVERT(true);
-const uint32_t DEBOUNCE_MS(25);
-Button btn(BUTTON_PIN, PULLUP, INVERT, DEBOUNCE_MS);
+const uint8_t BUTTON_PIN(8);    // connect a button from this pin to ground
+Button btn(BUTTON_PIN);
 
 //Continental US Time Zones
 TimeChangeRule EDT = { "EDT", Second, Sun, Mar, 2, -240 };    //Daylight time = UTC - 4 hours
@@ -42,6 +40,7 @@ void setup()
     // adjust the following line accordingly if you're in another time zone
     setTime(compileTime() + 300 * 60);
 
+    btn.begin();
     Serial.begin(115200);
     tz = timezones[tzIndex];
 }
@@ -85,7 +84,7 @@ void printDateTime(time_t t)
 time_t compileTime()
 {
     const time_t FUDGE(10);    //fudge factor to allow for upload time, etc. (seconds, YMMV)
-    char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+    const char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
     char compMon[3], *m;
 
     strncpy(compMon, compDate, 3);

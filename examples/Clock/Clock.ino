@@ -6,47 +6,43 @@
 // TimeChangeRules can be hard-coded or read from EEPROM, see comments.
 // Jack Christensen Mar 2012
 
-#include <Timezone.h>    //https://github.com/JChristensen/Timezone
+#include <Timezone.h>   // https://github.com/JChristensen/Timezone
 
-//US Eastern Time Zone (New York, Detroit)
-TimeChangeRule myDST = {"EDT", Second, Sun, Mar, 2, -240};    //Daylight time = UTC - 4 hours
-TimeChangeRule mySTD = {"EST", First, Sun, Nov, 2, -300};     //Standard time = UTC - 5 hours
+// US Eastern Time Zone (New York, Detroit)
+TimeChangeRule myDST = {"EDT", Second, Sun, Mar, 2, -240};    // Daylight time = UTC - 4 hours
+TimeChangeRule mySTD = {"EST", First, Sun, Nov, 2, -300};     // Standard time = UTC - 5 hours
 Timezone myTZ(myDST, mySTD);
 
-//If TimeChangeRules are already stored in EEPROM, comment out the three
-//lines above and uncomment the line below.
-//Timezone myTZ(100);       //assumes rules stored at EEPROM address 100
+// If TimeChangeRules are already stored in EEPROM, comment out the three
+// lines above and uncomment the line below.
+//Timezone myTZ(100);       // assumes rules stored at EEPROM address 100
 
-TimeChangeRule *tcr;        //pointer to the time change rule, use to get TZ abbrev
-time_t utc, local;
+TimeChangeRule *tcr;        // pointer to the time change rule, use to get TZ abbrev
 
-void setup(void)
+void setup()
 {
     Serial.begin(115200);
     setTime(myTZ.toUTC(compileTime()));
     //setTime(01, 55, 00, 11, 3, 2012);        //another way to set the time (hr,min,sec,day,mnth,yr)
 }
 
-void loop(void)
+void loop()
 {
+    time_t utc = now();
+    time_t local = myTZ.toLocal(utc, &tcr);
     Serial.println();
-    utc = now();
-    printTime(utc, "UTC");
-    local = myTZ.toLocal(utc, &tcr);
-    printTime(local, tcr -> abbrev);
+    printDateTime(utc, "UTC");
+    printDateTime(local, tcr -> abbrev);
     delay(10000);
 }
 
-//Function to return the compile date and time as a time_t value
-time_t compileTime(void)
+// Function to return the compile date and time as a time_t value
+time_t compileTime()
 {
-#define FUDGE 25        //fudge factor to allow for compile time (seconds, YMMV)
-
-    char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+    const time_t FUDGE(10);     // fudge factor to allow for compile time (seconds, YMMV)
+    const char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
     char chMon[3], *m;
-    int d, y;
     tmElements_t tm;
-    time_t t;
 
     strncpy(chMon, compDate, 3);
     chMon[3] = '\0';
@@ -58,43 +54,18 @@ time_t compileTime(void)
     tm.Hour = atoi(compTime);
     tm.Minute = atoi(compTime + 3);
     tm.Second = atoi(compTime + 6);
-    t = makeTime(tm);
-    return t + FUDGE;        //add fudge factor to allow for compile time
+    time_t t = makeTime(tm);
+    return t + FUDGE;           // add fudge factor to allow for compile time
 }
 
-//Function to print time with time zone
-void printTime(time_t t, char *tz)
+// format and print a time_t value, with a time zone appended.
+void printDateTime(time_t t, const char *tz)
 {
-    sPrintI00(hour(t));
-    sPrintDigits(minute(t));
-    sPrintDigits(second(t));
-    Serial.print(' ');
-    Serial.print(dayShortStr(weekday(t)));
-    Serial.print(' ');
-    sPrintI00(day(t));
-    Serial.print(' ');
-    Serial.print(monthShortStr(month(t)));
-    Serial.print(' ');
-    Serial.print(year(t));
-    Serial.print(' ');
-    Serial.print(tz);
-    Serial.println();
+    char buf[32];
+    char m[4];    // temporary storage for month string (DateStrings.cpp uses shared buffer)
+    strcpy(m, monthShortStr(month(t)));
+    sprintf(buf, "%.2d:%.2d:%.2d %s %.2d %s %d %s",
+        hour(t), minute(t), second(t), dayShortStr(weekday(t)), day(t), m, year(t), tz);
+    Serial.println(buf);
 }
 
-//Print an integer in "00" format (with leading zero).
-//Input value assumed to be between 0 and 99.
-void sPrintI00(int val)
-{
-    if (val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-    return;
-}
-
-//Print an integer in ":00" format (with leading zero).
-//Input value assumed to be between 0 and 99.
-void sPrintDigits(int val)
-{
-    Serial.print(':');
-    if(val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-}

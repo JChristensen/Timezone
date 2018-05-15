@@ -5,9 +5,8 @@
 // Self-adjusting clock for multiple time zones.
 // Jack Christensen Mar 2012
 //
-// Sources for DST rule information:
+// For time zone information:
 // http://www.timeanddate.com/worldclock/
-// http://home.tiscali.nl/~t876506/TZworld.html
 
 #include <Timezone.h>    // https://github.com/JChristensen/Timezone
 
@@ -53,39 +52,35 @@ TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
 TimeChangeRule usPST = {"PST", First, dowSunday, Nov, 2, -480};
 Timezone usPT(usPDT, usPST);
 
-time_t utc;
-
-void setup(void)
+void setup()
 {
     Serial.begin(115200);
     setTime(usET.toUTC(compileTime()));
 }
 
-void loop(void)
+void loop()
 {
+    time_t utc = now();
     Serial.println();
-    utc = now();
-    printTime(ausET, utc, "Sydney");
-    printTime(CE, utc, "Paris");
-    printTime(UK, utc, " London");
-    printTime(UTC, utc, " Universal Coordinated Time");
-    printTime(usET, utc, " New York");
-    printTime(usCT, utc, " Chicago");
-    printTime(usMT, utc, " Denver");
-    printTime(usAZ, utc, " Phoenix");
-    printTime(usPT, utc, " Los Angeles");
+    printDateTime(ausET, utc, "Sydney");
+    printDateTime(CE, utc, "Paris");
+    printDateTime(UK, utc, " London");
+    printDateTime(UTC, utc, " Universal Coordinated Time");
+    printDateTime(usET, utc, " New York");
+    printDateTime(usCT, utc, " Chicago");
+    printDateTime(usMT, utc, " Denver");
+    printDateTime(usAZ, utc, " Phoenix");
+    printDateTime(usPT, utc, " Los Angeles");
     delay(10000);
 }
 
 // Function to return the compile date and time as a time_t value
-time_t compileTime(void)
+time_t compileTime()
 {
-    const time_t FUDGE(25);        // fudge factor to allow for compile time (seconds, YMMV)
-    char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
-    char chMon[4], *m;
-    int d, y;
+    const time_t FUDGE(10);     // fudge factor to allow for compile time (seconds, YMMV)
+    const char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+    char chMon[3], *m;
     tmElements_t tm;
-    time_t t;
 
     strncpy(chMon, compDate, 3);
     chMon[3] = '\0';
@@ -97,47 +92,23 @@ time_t compileTime(void)
     tm.Hour = atoi(compTime);
     tm.Minute = atoi(compTime + 3);
     tm.Second = atoi(compTime + 6);
-    t = makeTime(tm);
-    return t + FUDGE;        // add fudge factor to allow for compile time
+    time_t t = makeTime(tm);
+    return t + FUDGE;           // add fudge factor to allow for compile time
 }
 
-// Function to print time with time zone
-void printTime(Timezone tz, time_t utc, char *loc)
+// given a Timezone object, UTC and a string description, convert and print local time with time zone
+void printDateTime(Timezone tz, time_t utc, const char *descr)
 {
+    char buf[40];
+    char m[4];    // temporary storage for month string (DateStrings.cpp uses shared buffer)
     TimeChangeRule *tcr;        // pointer to the time change rule, use to get the TZ abbrev
+
     time_t t = tz.toLocal(utc, &tcr);
-    sPrintI00(hour(t));
-    sPrintDigits(minute(t));
-    sPrintDigits(second(t));
+    strcpy(m, monthShortStr(month(t)));
+    sprintf(buf, "%.2d:%.2d:%.2d %s %.2d %s %d %s",
+        hour(t), minute(t), second(t), dayShortStr(weekday(t)), day(t), m, year(t), tcr -> abbrev);
+    Serial.print(buf);
     Serial.print(' ');
-    Serial.print(dayShortStr(weekday(t)));
-    Serial.print(' ');
-    sPrintI00(day(t));
-    Serial.print(' ');
-    Serial.print(monthShortStr(month(t)));
-    Serial.print(' ');
-    Serial.print(year(t));
-    Serial.print(' ');
-    Serial.print(tcr -> abbrev);
-    Serial.print(' ');
-    Serial.print(loc);
-    Serial.println();
+    Serial.println(descr);
 }
 
-// Print an integer in "00" format (with leading zero).
-// Input value assumed to be between 0 and 99.
-void sPrintI00(int val)
-{
-    if (val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-    return;
-}
-
-// Print an integer in ":00" format (with leading zero).
-// Input value assumed to be between 0 and 99.
-void sPrintDigits(int val)
-{
-    Serial.print(':');
-    if(val < 10) Serial.print('0');
-    Serial.print(val, DEC);
-}
