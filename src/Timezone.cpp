@@ -21,6 +21,16 @@ Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
     m_std = stdStart;
 }
 
+/*----------------------------------------------------------------------*
+ * Create a Timezone object for a zone that does not observe            *
+ * daylight time.                                                       *
+ *----------------------------------------------------------------------*/
+Timezone::Timezone(TimeChangeRule stdTime)
+{
+    m_dst = stdTime;
+    m_std = stdTime;
+}
+
 #ifdef __AVR__
 /*----------------------------------------------------------------------*
  * Create a Timezone object from time change rules stored in EEPROM     *

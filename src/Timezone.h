@@ -36,6 +36,7 @@ class Timezone
 {
     public:
         Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart);
+        Timezone(TimeChangeRule stdTime);
         Timezone(int address);
         time_t toLocal(time_t utc);
         time_t toLocal(time_t utc, TimeChangeRule **tcr);

@@ -67,14 +67,14 @@ TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
 TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
 ```
 
-For a time zone that does not change to daylight/summer time, pass the same rule twice to the constructor, for example:  
-`Timezone usAZ(usMST, usMST);`
-
 ## Coding Timezone objects
-There are two ways to define **Timezone** objects.
+There are three ways to define **Timezone** objects.
 
 By first defining **TimeChangeRule**s (as above) and giving the daylight time rule and the standard time rule (assuming usEDT and usEST defined as above):  
 `Timezone usEastern(usEDT, usEST);`
+
+For a time zone that does not change to daylight/summer time, pass a single rule to the constructor. For example:  
+`Timezone usAZ(usMST, usMST);`
 
 By reading rules previously stored in EEPROM.  This reads both the daylight and standard time rules previously stored at EEPROM address 100:  
 `Timezone usPacific(100);`
