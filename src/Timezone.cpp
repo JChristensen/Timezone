@@ -16,14 +16,20 @@
  * Create a Timezone object from the given time change rules.           *
  *----------------------------------------------------------------------*/
 Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
-    : m_dst(dstStart), m_std(stdStart), m_dstUTC(0), m_stdUTC(0), m_dstLoc(0), m_stdLoc(0) {}
+    : m_dst(dstStart), m_std(stdStart)
+{
+        initTimeChanges();
+}
 
 /*----------------------------------------------------------------------*
  * Create a Timezone object for a zone that does not observe            *
  * daylight time.                                                       *
  *----------------------------------------------------------------------*/
 Timezone::Timezone(TimeChangeRule stdTime)
-    : m_dst(stdTime), m_std(stdTime), m_dstUTC(0), m_stdUTC(0), m_dstLoc(0), m_stdLoc(0) {}
+    : m_dst(stdTime), m_std(stdTime)
+{
+        initTimeChanges();
+}
 
 #ifdef __AVR__
 /*----------------------------------------------------------------------*
@@ -155,6 +161,17 @@ void Timezone::calcTimeChanges(int yr)
 }
 
 /*----------------------------------------------------------------------*
+ * Initialize the DST and standard time change points.                  *
+ *----------------------------------------------------------------------*/
+void Timezone::initTimeChanges()
+{
+    m_dstLoc = 0;
+    m_stdLoc = 0;
+    m_dstUTC = 0;
+    m_stdUTC = 0;
+}
+
+/*----------------------------------------------------------------------*
  * Convert the given time change rule to a time_t value                 *
  * for the given year.                                                  *
  *----------------------------------------------------------------------*/
@@ -196,10 +213,7 @@ void Timezone::setRules(TimeChangeRule dstStart, TimeChangeRule stdStart)
 {
     m_dst = dstStart;
     m_std = stdStart;
-    m_dstUTC = 0;   // force calcTimeChanges() at next conversion call
-    m_stdUTC = 0;
-    m_dstLoc = 0;
-    m_stdLoc = 0;
+    initTimeChanges();  // force calcTimeChanges() at next conversion call
 }
 
 #ifdef __AVR__
@@ -212,10 +226,7 @@ void Timezone::readRules(int address)
     eeprom_read_block((void *) &m_dst, (void *) address, sizeof(m_dst));
     address += sizeof(m_dst);
     eeprom_read_block((void *) &m_std, (void *) address, sizeof(m_std));
-    m_dstUTC = 0;   // force calcTimeChanges() at next conversion call
-    m_stdUTC = 0;
-    m_dstLoc = 0;
-    m_stdLoc = 0;
+    initTimeChanges();  // force calcTimeChanges() at next conversion call
 }
 
 /*----------------------------------------------------------------------*

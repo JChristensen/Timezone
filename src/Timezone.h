@@ -49,6 +49,7 @@ class Timezone
 
     private:
         void calcTimeChanges(int yr);
+        void initTimeChanges();
         time_t toTime_t(TimeChangeRule r, int yr);
         TimeChangeRule m_dst;   // rule for start of dst or summer time for any year
         TimeChangeRule m_std;   // rule for start of standard time for any year
