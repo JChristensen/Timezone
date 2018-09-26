@@ -16,20 +16,14 @@
  * Create a Timezone object from the given time change rules.           *
  *----------------------------------------------------------------------*/
 Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
-{
-    m_dst = dstStart;
-    m_std = stdStart;
-}
+    : m_dst(dstStart), m_std(stdStart), m_dstUTC(0), m_stdUTC(0), m_dstLoc(0), m_stdLoc(0) {}
 
 /*----------------------------------------------------------------------*
  * Create a Timezone object for a zone that does not observe            *
  * daylight time.                                                       *
  *----------------------------------------------------------------------*/
 Timezone::Timezone(TimeChangeRule stdTime)
-{
-    m_dst = stdTime;
-    m_std = stdTime;
-}
+    : m_dst(stdTime), m_std(stdTime), m_dstUTC(0), m_stdUTC(0), m_dstLoc(0), m_stdLoc(0) {}
 
 #ifdef __AVR__
 /*----------------------------------------------------------------------*
