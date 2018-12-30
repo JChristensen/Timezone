@@ -6,6 +6,9 @@
 // Jack Christensen Mar 2012
 
 #include <Timezone.h>   // https://github.com/JChristensen/Timezone
+#if defined(ESP8266) || defined(ESP32)
+#include <EEPROM.h>     // bundled with your board's hardware package
+#endif  // defined(ESP8266) || defined(ESP32)
 
 // US Eastern Time Zone (New York, Detroit)
 TimeChangeRule usEdt = {"EDT", Second, Sun, Mar, 2, -240};    // UTC - 4 hours
@@ -15,6 +18,9 @@ Timezone usEastern(usEdt, usEst);
 void setup()
 {
     pinMode(13, OUTPUT);
+#if defined(ESP8266) || defined(ESP32)
+    EEPROM.begin(200);  // for ESP8266 and ESP32, configure the EEPROM size
+#endif  // defined(ESP8266) || defined(ESP32)
     usEastern.writeRules(100);    // write rules to EEPROM address 100
 }
 

@@ -8,9 +8,9 @@
 
 #include "Timezone.h"
 
-#ifdef __AVR__
-    #include <avr/eeprom.h>
-#endif
+#if defined(__AVR__) || defined(ESP8266) || defined(ESP32)
+    #include <EEPROM.h>
+#endif  // defined(__AVR__) || defined(ESP8266) || defined(ESP32)
 
 /*----------------------------------------------------------------------*
  * Create a Timezone object from the given time change rules.           *
@@ -31,7 +31,7 @@ Timezone::Timezone(TimeChangeRule stdTime)
         initTimeChanges();
 }
 
-#ifdef __AVR__
+#if defined(__AVR__) || defined(ESP8266) || defined(ESP32)
 /*----------------------------------------------------------------------*
  * Create a Timezone object from time change rules stored in EEPROM     *
  * at the given address.                                                *
@@ -40,7 +40,7 @@ Timezone::Timezone(int address)
 {
     readRules(address);
 }
-#endif
+#endif  // defined(__AVR__) || defined(ESP8266) || defined(ESP32)
 
 /*----------------------------------------------------------------------*
  * Convert the given UTC time to local time, standard or                *
@@ -216,16 +216,16 @@ void Timezone::setRules(TimeChangeRule dstStart, TimeChangeRule stdStart)
     initTimeChanges();  // force calcTimeChanges() at next conversion call
 }
 
-#ifdef __AVR__
+#if defined(__AVR__) || defined(ESP8266) || defined(ESP32)
 /*----------------------------------------------------------------------*
  * Read the daylight and standard time rules from EEPROM at             *
  * the given address.                                                   *
  *----------------------------------------------------------------------*/
 void Timezone::readRules(int address)
 {
-    eeprom_read_block((void *) &m_dst, (void *) address, sizeof(m_dst));
+    EEPROM.get(address, m_dst);
     address += sizeof(m_dst);
-    eeprom_read_block((void *) &m_std, (void *) address, sizeof(m_std));
+    EEPROM.get(address, m_std);
     initTimeChanges();  // force calcTimeChanges() at next conversion call
 }
 
@@ -235,9 +235,12 @@ void Timezone::readRules(int address)
  *----------------------------------------------------------------------*/
 void Timezone::writeRules(int address)
 {
-    eeprom_write_block((void *) &m_dst, (void *) address, sizeof(m_dst));
+    EEPROM.put(address, m_dst);
     address += sizeof(m_dst);
-    eeprom_write_block((void *) &m_std, (void *) address, sizeof(m_std));
+    EEPROM.put(address, m_std);
+#if defined(ESP8266) || defined(ESP32)
+    EEPROM.commit();
+#endif  // defined(ESP8266) || defined(ESP32)
 }
 
-#endif
+#endif  // defined(__AVR__) || defined(ESP8266) || defined(ESP32)
