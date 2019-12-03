@@ -88,7 +88,7 @@ time_t compileTime()
 {
     const time_t FUDGE(10);     // fudge factor to allow for compile time (seconds, YMMV)
     const char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
-    char chMon[3], *m;
+    char chMon[4], *m;
     tmElements_t tm;
 
     strncpy(chMon, compDate, 3);
