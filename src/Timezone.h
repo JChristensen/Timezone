@@ -30,8 +30,13 @@ struct TimeChangeRule
     uint8_t month;     // 1=Jan, 2=Feb, ... 12=Dec
     uint8_t hour;      // 0-23
     int offset;        // offset from UTC in minutes
+
+    TimeChangeRule() = default;
+    TimeChangeRule(const char *, uint8_t week, uint8_t dow, uint8_t month, uint8_t hour, int offset);
 };
         
+
+
 class Timezone
 {
     public:
