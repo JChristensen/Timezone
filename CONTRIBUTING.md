@@ -1,4 +1,12 @@
-# A GitHub Manifesto
+
+# This Fork
+Shane Powell
+July 2022
+I agree with all that Jack wrote.
+Please feel free to add to this fork, or post issues if desired.
+
+
+# A GitHub Manifesto (original text)
 ### Notes on contributing to my repositories
 Jack Christensen  
 Jan 2018
