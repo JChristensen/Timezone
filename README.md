@@ -1,6 +1,7 @@
 # Micropython uTimezone Library
 https://github.com/shaneapowell/utimezone
-A fork of
+
+A fork/port of
 https://github.com/JChristensen/Timezone  
 
 README file  
