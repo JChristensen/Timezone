@@ -94,7 +94,7 @@ utc: int
 usEDT = TimeChangeRule("EDT", tz.SECOND, tz.SUN, tz.MAR, 2, -240)
 usEST = TimeChangeRule("EST", tz.FIRST, tz.SUN, tz.NOV, 2, -300) 
 usEastern = Timezone(usEST, usEDT)
-utc = time.ticks_ms();	 # current time
+utc = time.time();	 # current time
 eastern = usEastern.toLocal(utc)
 ```
 
