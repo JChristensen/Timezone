@@ -76,7 +76,7 @@ class Timezone:
     _dstUTC = 0
     _stdUTC = 0
 
-    def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule = None):
+    def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule):
         """
         """
         self.setRules(stdStart, dstStart)
