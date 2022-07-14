@@ -68,5 +68,5 @@ TIMEZONES = {
     America_MountainNoDST._name:    America_MountainNoDST,
     America_Pacific._name:          America_Pacific,
     America_Alaska._name:           America_Alaska,
-    America_Hawaii.name:            America_Hawaii
+    America_Hawaii._name:           America_Hawaii
     }
