@@ -212,6 +212,8 @@ def test_loc_is_dst():
     else:
         print(FAIL)
 
+# TODO
+# Add test for each defined TimeZone in utzlist.py
 
 
 # Run the tests

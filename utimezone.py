@@ -75,10 +75,15 @@ class Timezone:
     _stdLoc = 0
     _dstUTC = 0
     _stdUTC = 0
+    _name = ""
 
-    def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule):
+    def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule, name = None):
         """
+        stdStart - The start of Standard Time Rule
+        dstStart - The start of Daylight Savings Time Rule
+        name - Optional name of this timezone
         """
+        self._name = name
         self.setRules(stdStart, dstStart)
         
     
