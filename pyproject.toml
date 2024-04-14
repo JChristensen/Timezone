@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "micropython-utimezone"
+version = "1.0.0"
+authors = [
+  { name="Shane Powell" }, {name="JChristensen"}
+]
+description = "A Micrpythyon, light-weight timezone utility."
+readme = "README.md"
+license = { file="LICENSE.md" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/shaneapowell/utimezone"
+"Bug Tracker" = "https://github.com/shaneapowell/utimezone/issues"

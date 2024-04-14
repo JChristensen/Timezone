@@ -1,5 +1,5 @@
-import utimezone
-from utimezone import TimeChangeRule, Timezone
+import utztime
+from utztime.utimezone import TimeChangeRule, Timezone
 import time
 """
 Simple manual test than can easily be run on a micropython board.

@@ -1,8 +1,6 @@
-import utimezone as tz
-from utimezone import TimeChangeRule, Timezone
+import utztime as tz
+from utztime.utimezone import TimeChangeRule, Timezone
 import time
-import ntptime
-from machine import RTC
 
 # Simple Example
 def simple():
