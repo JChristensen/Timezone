@@ -7,9 +7,6 @@ https://github.com/shaneapowell/utimezone
 A fork/port of (and more)
 https://github.com/JChristensen/Timezone
 
-README file
-Shane Powell
-July 2022
 
 # License
 Micropython Timezone Library Copyright (C) 2022 Shane Powell GNU GPL v3.0
