@@ -1,5 +1,8 @@
 # Micropython uTime/TimeZone Library
+[![build](https://github.com/shaneapowell/utimezone/actions/workflows/tests.yml/badge.svg)](https://github.com/shaneapowell/utimezone/actions/workflows/tests.yml)
+
 https://github.com/shaneapowell/utimezone
+
 
 A fork/port of (and more)
 https://github.com/JChristensen/Timezone
