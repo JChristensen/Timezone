@@ -6,18 +6,15 @@ Intended to be used on micropython devices.
 Python Timezone Library Copyright (C) 2018 by Jack Christensen and
 licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 """
-import sys
-if sys.implementation.name == "micropython":
-    import utime as time
-else:
-    import time
+import time
+import utztime.tztime
 
 # week values for TimeChangeRule
-LAST      = 0
-FIRST     = 1
-SECOND    = 2
-THIRD     = 3
-FOURTH    = 4
+LAST = 0
+FIRST = 1
+SECOND = 2
+THIRD = 3
+FOURTH = 4
 
 # dow values for TimeChangeRule
 SUN = 1
@@ -45,6 +42,7 @@ DEC = 12
 SECS_PER_MIN = 60
 SECS_PER_DAY = 24 * 60 * 60
 
+
 class TimeChangeRule:
     """
     Simple data structure to define a change over rule
@@ -57,12 +55,12 @@ class TimeChangeRule:
     offset: int
 
     def __init__(self,
-        abbrev: str,    # five chars max
-        week: int,      # First, Second, Third, Fourth, or Last week of the month
-        dow: int,       # day of week, 1=Sun, 2=Mon, ... 7=Sat
-        month: int,     # 1=Jan, 2=Feb, ... 12=Dec
-        hour: int,      # 0-23
-        offset: int):     # offset from UTC in minutes
+                 abbrev: str,    # five chars max
+                 week: int,      # First, Second, Third, Fourth, or Last week of the month
+                 dow: int,       # day of week, 1=Sun, 2=Mon, ... 7=Sat
+                 month: int,     # 1=Jan, 2=Feb, ... 12=Dec
+                 hour: int,      # 0-23
+                 offset: int):   # offset from UTC in minutes
         self.abbrev = abbrev
         self.week = week
         self.dow = dow
@@ -73,15 +71,8 @@ class TimeChangeRule:
 
 class Timezone:
 
-    _std: TimeChangeRule = None
-    _dst: TimeChangeRule = None
-    _dstLoc = 0
-    _stdLoc = 0
-    _dstUTC = 0
-    _stdUTC = 0
-    _name = ""
 
-    def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule, name = None):
+    def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule, name: str | None = None):
         """
         stdStart - The start of Standard Time Rule
         dstStart - The start of Daylight Savings Time Rule
@@ -99,8 +90,8 @@ class Timezone:
         Calculate the DST and standard time change points for the given
         given year as local and UTC time_t values.
         """
-        self._dstLoc = self._toTime(self._dst, yr);
-        self._stdLoc = self._toTime(self._std, yr);
+        self._dstLoc = self._toTime(self._dst, yr)
+        self._stdLoc = self._toTime(self._std, yr)
         self._dstUTC = self._dstLoc - self._std.offset * SECS_PER_MIN
         self._stdUTC = self._stdLoc - self._dst.offset * SECS_PER_MIN
 
@@ -118,18 +109,18 @@ class Timezone:
             if m > 12:          # yes, for "Last", go to the next month
                 m = 1
                 yr += 1
-            w = 1;              # and treat as first week of next month, subtract 7 days later
+            w = 1               # and treat as first week of next month, subtract 7 days later
 
         # Need to protect against asking prior to our 2000 epoch.
         yr = max(2000, yr)
-        t = time.mktime( (yr, m, 1, r.hour, 0, 0, 0, 0) )
+        t = utztime.tztime._mktime(yr, m, 1, r.hour, 0, 0)
         tWeekday = time.gmtime(t)[6]
 
         # add offset from the first of the month to r.dow, and offset for the given week
-        t += ( (r.dow - tWeekday + 7) % 7 + (w - 1) * 7 ) * SECS_PER_DAY
+        t += ((r.dow - tWeekday + 7) % 7 + (w - 1) * 7) * SECS_PER_DAY
         # back up a week if this is a "Last" rule
         if (r.week == 0):
-             t -= 7 * SECS_PER_DAY
+            t -= 7 * SECS_PER_DAY
 
         return t
 
@@ -237,4 +228,3 @@ class Timezone:
         self._stdLoc = 0
         self._dstUTC = 0
         self._stdUTC = 0
-

@@ -1,4 +1,4 @@
-import utztime as tz
+from utztime import utimezone as tz
 from utztime.utimezone import TimeChangeRule, Timezone
 import time
 
@@ -35,3 +35,8 @@ def changeTz():
     print(time.gmtime(loc))
 
 
+
+if __name__ == '__main__':
+
+    simple()
+    changeTz()

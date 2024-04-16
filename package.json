@@ -1,0 +1,10 @@
+{
+    "urls": [
+        ["utztime/utimezone.py", "github:shaneapowell/utimezone/dist/utztime/utimezone.mpy"],
+        ["utztime/utzlist.py", "github:shaneapowell/utimezone/dist/utztime/utzlist.mpy"],
+        ["utztime/__init__.py", "github:shaneapowell/utimezone/dist/utztime/__init__.mpy"]
+    ],
+    "deps": [
+    ],
+    "version": "0.1"
+}

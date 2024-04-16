@@ -1,3 +1,4 @@
+micropython KEYWORD1
 TimeChangeRule	KEYWORD1
 Timezone	KEYWORD1
 toLocal	KEYWORD2

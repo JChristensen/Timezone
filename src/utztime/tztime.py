@@ -1,8 +1,22 @@
+import sys
 import time
 from . import utimezone
-from . import utzlist
 
-WEEKDAYS= ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat']
+_utime = True if sys.implementation.name == "micropython" else False
+
+WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat']
+
+
+def _mktime(y: int, m: int, d: int, h: int, min: int, s: int) -> int:
+    """
+    A platform safe mktime, since unix and upython have slightly different versions
+    upython the tuple is (y,m,d,h,m,s,wk,yd)
+    Unix python the tuple is (y,m,d,h,m,s,wk,yd,dst)
+    """
+    if _utime:
+        return int(time.mktime((y, m, d, h, min, s, None, None)))  # type: ignore [arg-type]
+    else:
+        return int(time.mktime((y, m, d, h, min, s, -1, -1, -1)))
 
 
 class TZTime:
@@ -16,7 +30,7 @@ class TZTime:
     returns a new instance
     """
 
-    def __init__(self, t: int = None, tz: utimezone.Timezone = None):
+    def __init__(self, t: int | None = None, tz: utimezone.Timezone | None = None):
         """
         Create a new instance of a TZTime object.
         Defaults to now() at Zulu if no values provided.
@@ -27,28 +41,29 @@ class TZTime:
 
         # The unix "time" instance
         if t is None:
-            self._time = time.time()
+            self._time: int = int(time.time())
         else:
             assert isinstance(t, int), f"t must be an int, received [{t.__class__}]"
             self._time = t
 
-        # The structured time. Calcualted only the 1st time it's needed
-        self._stime = None
+        # The structured time. Calculated only the 1st time it's needed
+        self._stime: time.struct_time | None = None
 
         # The TimeZone
         self._tz = tz
 
 
-    def now():
+    @staticmethod
+    def now() -> 'TZTime':
         return TZTime()
 
 
-    def create(y: int = 0, m: int = 0, d: int = 0, h: int = 0, min: int = 0, s: int = 0, tz: utimezone.Timezone = None):
+    @staticmethod
+    def create(y: int = 0, m: int = 0, d: int = 0, h: int = 0, min: int = 0, s: int = 0, tz: utimezone.Timezone | None = None) -> 'TZTime':
         """
-        Create a new instnace with the given time values, and specific timezone
+        Create a new instnace with the given time values, and specific timezone. A None tz is treated like Zulu/UTC
         """
-        ltime = (y, m, d, h, min, s, None, None)
-        t = time.mktime(ltime)
+        t = _mktime(y, m, d, h, min, s)
         return TZTime(t, tz)
 
 
@@ -59,39 +74,39 @@ class TZTime:
         return self.toISO8601()
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.toISO8601()
 
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if not isinstance(other, TZTime):
             return False
         return self.toUTC()._time == other.toUTC()._time
 
-    def __ne__(self, other):
+    def __ne__(self, other) -> bool:
         if not isinstance(other, TZTime):
             return False
         return self.toUTC()._time != other.toUTC()._time
 
 
-    def __gt__(self, other):
+    def __gt__(self, other) -> bool:
         if not isinstance(other, TZTime):
             return False
         return self.toUTC()._time > other.toUTC()._time
 
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         if not isinstance(other, TZTime):
             return False
         return self.toUTC()._time < other.toUTC()._time
 
-    def __ge__(self, other):
+    def __ge__(self, other) -> bool:
         if not isinstance(other, TZTime):
             return False
         return self.toUTC()._time >= other.toUTC()._time
 
 
-    def __le__(self, other):
+    def __le__(self, other) -> bool:
         if not isinstance(other, TZTime):
             return False
         return self.toUTC()._time <= other.toUTC()._time
@@ -102,7 +117,7 @@ class TZTime:
         Return the structured time tuple.
         """
         if self._stime is None:
-            self._stime = time.gmtime(self._time)
+            self._stime = time.localtime(self._time)
         return self._stime
 
 
@@ -156,7 +171,7 @@ class TZTime:
         return self._time
 
 
-    def tz(self) -> utimezone.Timezone:
+    def tz(self) -> utimezone.Timezone | None:
         return self._tz
 
 
@@ -197,8 +212,8 @@ class TZTime:
         Add x years to a time value.
         """
         gm = self._gmtime()
-        nt = (gm[0] + years, gm[1], gm[2], gm[3], gm[4], gm[5], None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0] + years, gm[1], gm[2], gm[3], gm[4], gm[5])
+        return TZTime(nt, self._tz)
 
 
     def plusMonths(self, months: int):
@@ -206,8 +221,8 @@ class TZTime:
         Add x months to a time value.
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1] + months, gm[2], gm[3], gm[4], gm[5], None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1] + months, gm[2], gm[3], gm[4], gm[5])
+        return TZTime(nt, self._tz)
 
 
     def plusDays(self, days: int):
@@ -215,8 +230,8 @@ class TZTime:
         Add x days to a time value.
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1], gm[2] + days, gm[3], gm[4], gm[5], None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1], gm[2] + days, gm[3], gm[4], gm[5])
+        return TZTime(nt, self._tz)
 
 
     def plusHours(self, hours: int):
@@ -224,8 +239,8 @@ class TZTime:
         Add x hours to a time value.
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1], gm[2], gm[3] + hours, gm[4], gm[5], None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1], gm[2], gm[3] + hours, gm[4], gm[5])
+        return TZTime(nt, self._tz)
 
 
     def plusMinutes(self, minutes: int):
@@ -233,8 +248,8 @@ class TZTime:
         Add x minutes to a time value.
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1], gm[2], gm[3], gm[4] + minutes, gm[5], None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1], gm[2], gm[3], gm[4] + minutes, gm[5])
+        return TZTime(nt, self._tz)
 
 
     def plusSeconds(self, seconds: int):
@@ -242,8 +257,8 @@ class TZTime:
         Add x seconds to a time value.
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1], gm[2], gm[3], gm[4], gm[5] + seconds, None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1], gm[2], gm[3], gm[4], gm[5] + seconds)
+        return TZTime(nt, self._tz)
 
 
     def withMinuts(self, minutes: int):
@@ -251,8 +266,8 @@ class TZTime:
         Set the minutes value
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1], gm[2], gm[3], minutes, gm[5], None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1], gm[2], gm[3], minutes, gm[5])
+        return TZTime(nt, self._tz)
 
 
     def withSeconds(self, seconds: int):
@@ -260,8 +275,8 @@ class TZTime:
         Set the seconds value
         """
         gm = self._gmtime()
-        nt = (gm[0], gm[1], gm[2], gm[3], gm[4], seconds, None, None)
-        return TZTime(time.mktime(nt), self._tz)
+        nt = _mktime(gm[0], gm[1], gm[2], gm[3], gm[4], seconds)
+        return TZTime(nt, self._tz)
 
 
     def withTimezone(self, tz: utimezone.Timezone) -> 'TZTime':
@@ -272,7 +287,7 @@ class TZTime:
         return TZTime(self._time, tz)
 
 
-def toISO8601(t: int, tz: utimezone.Timezone = None) -> str:
+def toISO8601(t: int, tz: utimezone.Timezone | None = None) -> str:
     """
     Take the unix time t, and convert it into an ISO8601 string.
     Use the tz as the Zone designator.  None for Zulu or Local.
@@ -295,15 +310,15 @@ def toISO8601(t: int, tz: utimezone.Timezone = None) -> str:
         offsetMinutes = int(offset % 60)
         offsetDir = "+" if offsetHours > 0 else "-"
         offsetHours = abs(offsetHours)
-        tz = f"{offsetDir}{offsetHours:02d}:{offsetMinutes:02d}"
+        tzstr = f"{offsetDir}{offsetHours:02d}:{offsetMinutes:02d}"
     else:
-        tz = "Z"
+        tzstr = "Z"
 
     g = time.gmtime(t)
-    iso = f"{g[0]:04d}-{g[1]:02d}-{g[2]:02d}T{g[3]:02d}:{g[4]:02d}:{g[5]:02d}{tz}"
+    iso = f"{g[0]:04d}-{g[1]:02d}-{g[2]:02d}T{g[3]:02d}:{g[4]:02d}:{g[5]:02d}{tzstr}"
     return iso
 
 
-
-# A convience.. access to the EPOCH value
+# Access to the EPOCH value. Unlike non-micropython devices which use an EPOCH of Jan 1 1970.
+# The Micropython EPOCH is Jan 1 2000
 EPOCH = TZTime.create(2000, 1, 1, 0, 0, 0, None)

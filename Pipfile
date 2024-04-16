@@ -1,0 +1,39 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flake8 = "==7.0.0"
+mypy = "==1.8.0"
+mpremote = "==1.22.0"
+rshell = "==0.0.32"
+tox = "==4.14.2"
+pytest = "==8.1.1"
+mpy-cross = "==1.22.2"
+
+[dev-packages]
+
+[requires]
+#python_version = "3.11"
+
+[scripts]
+linter = "flake8 src/utztime tests"
+typechecker = "mypy src/utztime tests  --check-untyped-defs"
+tests = "pytest -q tests"
+
+# On Device deploy to /lib
+deploy = "rshell -p /dev/ttyACM0 cp -r dist/utztime /pyboard/lib"
+
+# On Device Test Scripts
+deploy_tests_deps = "mpremote mip install unittest"
+deploy_tests = "rshell -p /dev/ttyACM0 cp -r tests /pyboard; ls"
+remove_tests = "rshell -p /dev/ttyACM0 rm -r /pyboard/tests"
+utests = "mpremote run run_tests.py"
+
+# On Device Run the example
+example = "mpremote run examples/example_tztime.py"
+
+# pre-mpy build
+build = "python mpy_cross_all.py -o dist src"
+
