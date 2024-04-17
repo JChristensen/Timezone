@@ -16,7 +16,8 @@ pydoc-markdown = "*"
 [dev-packages]
 
 [requires]
-#python_version = "3.11"
+# Commented out, I don't enforce python 3.11. But, only support 3.8 and above.
+# python_version = "3.10"
 
 [scripts]
 linter = "flake8 src/utztime tests"

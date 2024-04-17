@@ -43,6 +43,7 @@ mpremote mip install github:shaneapowell/utimezone/package-raw.json
 ```
 
 ## Manually
+- Make sure you have a python3 runtime installed.  3.8 -> 3.12 currently supported.
 - Clone this repo
     ```
     git clone https://github.com/shaneapowell/utimezone.git
