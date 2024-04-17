@@ -294,4 +294,3 @@ class Timezone:
             return local >= self._dstLoc and local < self._stdLoc
         else:                                  # southern hemisphere
             return not (local >= self._stdLoc and local < self._dstLoc)
-

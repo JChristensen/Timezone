@@ -94,12 +94,12 @@ class TestTZList(unittest.TestCase):
 
 
         # Given
-        l = tzl.getTimezones()
+        lst = tzl.getTimezones()
 
         # Then
         prevTz = None
         prevOffset = 999999999
-        for tz in l:
+        for tz in lst:
             assert tz._std.offset <= prevOffset, f"{tz._std.offset} <= {prevOffset} on {tz} {prevTz}"
             prevTz = tz
             prevOffset = tz._std.offset
@@ -116,8 +116,29 @@ class TestTZList(unittest.TestCase):
 
         # When
         tzl.setTimezone(tz)
-        l = tzl.getTimezones()
+        lst = tzl.getTimezones()
 
         # Then
-        assert l[0] == tz
+        assert lst[0] == tz
 
+
+    def test_get_list_names_is_only_strings(self):
+
+        # Given
+        nameList = tzl.getTimezoneNames()
+
+        # Then
+        for name in nameList:
+            assert type(name) == str
+
+
+    def test_get_list_names_matches_main_list(self):
+
+        # Given
+        tzList = tzl.getTimezones()
+        nameList = tzl.getTimezoneNames()
+
+        # Then
+        assert len(tzList) == len(nameList)
+        for index, name in enumerate(nameList):
+            assert name == tzList[index].getName()

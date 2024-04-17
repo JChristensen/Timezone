@@ -1,20 +1,20 @@
 import utztime.utimezone as utimezone
 from utztime.utimezone import Timezone, TimeChangeRule
 import unittest
-from .test_rules import UTC_01, UTC_02, EAST_01, EAST_02, CENT_01, CENT_02
-
-EDT = TimeChangeRule("EDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, -240)
-EST = TimeChangeRule("EST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -300)
-CST = TimeChangeRule("CST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -400)
+from .test_rules import UTC_01, UTC_02, EAST_01, EAST_02
 
 
 class TestTimezone(unittest.TestCase):
+
+    EDT = TimeChangeRule("EDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, -240)
+    EST = TimeChangeRule("EST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -300)
+    CST = TimeChangeRule("CST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -400)
 
 
     def test_create_simple_timezone(self):
 
         # When
-        tz = Timezone(EST, EDT, "MyZone")
+        tz = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz is not None
@@ -23,8 +23,8 @@ class TestTimezone(unittest.TestCase):
     def test_tz_eq(self):
 
         # Given
-        tz1 = Timezone(EST, EDT, "MyZone")
-        tz2 = Timezone(EST, EDT, "MyZone")
+        tz1 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
+        tz2 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz1 == tz2
@@ -33,8 +33,8 @@ class TestTimezone(unittest.TestCase):
     def test_tz_ne(self):
 
         # Given
-        tz1 = Timezone(EST, EDT, "MyZone")
-        tz2 = Timezone(CST, EDT, "MyZone")
+        tz1 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
+        tz2 = Timezone(TestTimezone.CST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz1 != tz2
@@ -43,8 +43,8 @@ class TestTimezone(unittest.TestCase):
     def test_tz_gt(self):
 
         # Given
-        tz1 = Timezone(EST, EDT, "MyZone")
-        tz2 = Timezone(CST, EDT, "MyZone")
+        tz1 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
+        tz2 = Timezone(TestTimezone.CST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz1 > tz2
@@ -53,8 +53,8 @@ class TestTimezone(unittest.TestCase):
     def test_tz_lt(self):
 
         # Given
-        tz1 = Timezone(CST, EDT, "MyZone")
-        tz2 = Timezone(EST, EDT, "MyZone")
+        tz1 = Timezone(TestTimezone.CST, TestTimezone.EDT, "MyZone")
+        tz2 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz1 < tz2
@@ -63,8 +63,8 @@ class TestTimezone(unittest.TestCase):
     def test_tz_ge(self):
 
         # Given
-        tz1 = Timezone(EST, EDT, "MyZone")
-        tz2 = Timezone(CST, EDT, "MyZone")
+        tz1 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
+        tz2 = Timezone(TestTimezone.CST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz1.__ge__(tz2), "ONE"
@@ -74,8 +74,8 @@ class TestTimezone(unittest.TestCase):
     def test_tz_le(self):
 
         # Given
-        tz1 = Timezone(CST, EDT, "MyZone")
-        tz2 = Timezone(EST, EDT, "MyZone")
+        tz1 = Timezone(TestTimezone.CST, TestTimezone.EDT, "MyZone")
+        tz2 = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # Then
         assert tz1 <= tz2
@@ -85,7 +85,7 @@ class TestTimezone(unittest.TestCase):
 
         # Given
         name = "MyTZName"
-        tz = Timezone(CST, EDT, name)
+        tz = Timezone(TestTimezone.CST, TestTimezone.EDT, name)
 
         # Then
         assert tz.getName() == name
@@ -94,7 +94,7 @@ class TestTimezone(unittest.TestCase):
     def test_to_utc(self):
 
         # Given
-        tz = Timezone(EST, EDT, "MyZone")
+        tz = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # When
         t = tz.toUTC(EAST_01)
@@ -106,7 +106,7 @@ class TestTimezone(unittest.TestCase):
     def test_to_local(self):
 
         # Given
-        tz = Timezone(EST, EDT, "MyZone")
+        tz = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # When
         t = tz.toLocal(UTC_01)
@@ -118,7 +118,7 @@ class TestTimezone(unittest.TestCase):
     def test_is_utc_dst(self):
 
         # Given
-        tz = Timezone(EST, EDT, "MyZone")
+        tz = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # When
         isDst = tz.utcIsDST(UTC_01)
@@ -132,7 +132,7 @@ class TestTimezone(unittest.TestCase):
     def test_is_local_dst(self):
 
         # Given
-        tz = Timezone(EST, EDT, "MyZone")
+        tz = Timezone(TestTimezone.EST, TestTimezone.EDT, "MyZone")
 
         # When
         isDst = tz.utcIsDST(EAST_01)
@@ -144,5 +144,3 @@ class TestTimezone(unittest.TestCase):
 
 
     # TODO:  More tests around the private internals of the ported class
-
-

@@ -352,5 +352,3 @@ def toISO8601(t: int, tz: utimezone.Timezone | None = None) -> str:
     g = time.gmtime(t)
     iso = f"{g[0]:04d}-{g[1]:02d}-{g[2]:02d}T{g[3]:02d}:{g[4]:02d}:{g[5]:02d}{tzstr}"
     return iso
-
-

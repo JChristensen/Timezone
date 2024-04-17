@@ -4,9 +4,6 @@ import unittest
 import time
 
 
-CDS = (2022, 7, 13, 10, 58, 43)  # Central Daylight Savings Time
-CST = (2022, 1, 13, 10, 58, 43)  # Central Standard Time
-
 
 class TestTZTime(unittest.TestCase):
 
@@ -158,4 +155,3 @@ class TestTZTime(unittest.TestCase):
         assert t1 != t3
         assert t2 <= t3
         assert t3 == t3
-

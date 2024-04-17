@@ -31,4 +31,3 @@ Simple Access to the EPOCH value. Unlike non-micropython devices which use an EP
 The Micropython EPOCH is (Jan 1 2000 0:0:0 UTC)
 """
 EPOCH = TZTime.create(2000, 1, 1, 0, 0, 0, None)
-

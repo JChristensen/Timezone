@@ -24,9 +24,15 @@ jobs:
       - run: pipenv sync
       - run: pipenv run linter
       - run: pipenv run typechecker
-      - run: pipenv run tests  # Helps to chatch
-      - run: pipenv run build  # if I forgot to build
-      - run: pipenv run tests  # and deploy to dist
+      - run: pipenv run tests
+      - run: |
+        HASH1=$(find dist -type f | sort | sha1sum)
+        pipenv run build
+        HASH2=$(find dist -type f | sort | sha1sum)
+        if [[ "$HASH1" != "$HASH2" ]]; then
+          echo "Re-Build of dist folder produced different hash. Did you forget to pre-build?"
+          exit 1
+        fi
 
   emulator-tests:
     needs: lint-test-build

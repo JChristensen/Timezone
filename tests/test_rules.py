@@ -17,7 +17,7 @@ CENT_02 = 1642089523  # (2022, 1, 13, 9, 58, 43)
 # upython and unix python, use 2 different EPOCHs
 UPYTHON_EPOCH = 946706400  # (2000, 1, 1, 0, 0, 0)
 
-if sys.implementation.name == "micropython" and not "linux" in sys.implementation._machine:
+if sys.implementation.name == "micropython" and "linux" not in sys.implementation._machine:
     UTC_01 -= UPYTHON_EPOCH
     EAST_01 -= UPYTHON_EPOCH
     CENT_01 -= UPYTHON_EPOCH

@@ -34,7 +34,7 @@ def getTimezoneNames() -> list[str]:
     """
     Return a COPY list of the registered timezone names.  Sorted by Standard Time Offset (reverse) Highest to Lowest
     """
-    [z.getName() for z in _TIMEZONES]
+    return [z.getName() for z in _TIMEZONES]
 
 
 def getTimezone(tzname: str) -> tz.Timezone | None:
@@ -45,7 +45,10 @@ def getTimezone(tzname: str) -> tz.Timezone | None:
     Timezones are immutable.
     """
     tzname = tzname.upper()
-    return next((z for z in _TIMEZONES if z.getName().upper() == tzname), None)
+    try:
+        return next(z for z in _TIMEZONES if z.getName().upper() == tzname)
+    except StopIteration:
+        return None
 
 
 def setTimezone(tz: tz.Timezone):
