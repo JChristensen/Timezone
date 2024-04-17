@@ -1,5 +1,5 @@
 # Micropython uTime/TimeZone Library
-[![build](https://github.com/shaneapowell/utimezone/actions/workflows/tests.yml/badge.svg)](https://github.com/shaneapowell/utimezone/actions/workflows/tests.yml)
+[![tests](https://github.com/shaneapowell/utimezone/actions/workflows/tests.yml/badge.svg)](https://github.com/shaneapowell/utimezone/actions/workflows/tests.yml)
 
 https://github.com/shaneapowell/utimezone
 
