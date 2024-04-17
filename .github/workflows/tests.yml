@@ -11,6 +11,11 @@ jobs:
   lint-test-build:
     name: lint-and-typecheck
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - uses: actions/checkout@v3
 
@@ -25,7 +30,7 @@ jobs:
       - run: pipenv run linter
       - run: pipenv run typechecker
       - run: pipenv run tests
-      - run: >
+      - run: |
           HASH1=$(find dist -type f | sort | sha1sum)
           pipenv run build
           HASH2=$(find dist -type f | sort | sha1sum)
