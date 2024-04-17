@@ -1,8 +1,11 @@
+
+import mip
+mip.install("unittest")
+import unittest
+
 import sys
 
 sys.path.insert(0, 'src')
-
-import unittest
 
 if not unittest.main('tests').wasSuccessful():
     sys.exit(1)
