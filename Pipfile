@@ -11,6 +11,7 @@ rshell = "==0.0.32"
 tox = "==4.14.2"
 pytest = "==8.1.1"
 mpy-cross = "==1.22.2"
+pydoc-markdown = "*"
 
 [dev-packages]
 
@@ -29,11 +30,15 @@ deploy = "rshell -p /dev/ttyACM0 cp -r dist/utztime /pyboard/lib"
 deploy_tests_deps = "mpremote mip install unittest"
 deploy_tests = "rshell -p /dev/ttyACM0 cp -r tests /pyboard; ls"
 remove_tests = "rshell -p /dev/ttyACM0 rm -r /pyboard/tests"
-utests = "mpremote run run_tests.py"
+utests = "mpremote run run_tests_on_hardware.py"
+etests = "micropython run_tests_on_emulator.py"
 
 # On Device Run the example
 example = "mpremote run examples/example_tztime.py"
 
 # pre-mpy build
 build = "python mpy_cross_all.py -o dist src"
+
+# Docs
+generate_docs = "bash -c \"pydoc-markdown -p utztime -I src --render-toc >docs/API.md\""
 

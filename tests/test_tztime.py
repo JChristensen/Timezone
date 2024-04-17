@@ -72,3 +72,90 @@ class TestTZTime(unittest.TestCase):
 
         # Then
         assert pst > est
+
+
+    def test_time_eq(self):
+
+        # Given
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+
+        # Then
+        assert t1 == t2
+        assert t1 == t3
+        assert t2 == t3
+
+
+    def test_time_ne(self):
+
+        # Given
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 7, tz.America_Pacific)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 8, tz.America_Eastern)
+
+        # Then
+        assert t1 != t2
+        assert t1 != t3
+        assert t2 != t3
+
+
+    def test_time_gt(self):
+
+        # Given
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 7, tz.America_Pacific)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+
+        # Then
+        assert t1 > t2
+        assert t1 != t2
+        assert t1 > t3
+        assert t1 != t3
+
+
+    def test_time_lt(self):
+
+        # Given
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 5, tz.America_Pacific)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+
+        # Then
+        assert t1 < t2
+        assert t1 != t2
+        assert t1 < t3
+        assert t1 != t3
+
+
+    def test_time_ge(self):
+
+        # Given
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 7, tz.America_Pacific)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+
+        # Then
+        assert t1 >= t2
+        assert t1 != t2
+        assert t1 >= t3
+        assert t1 != t3
+        assert t2 >= t3
+        assert t3 == t3
+
+
+    def test_time_le(self):
+
+        # Given
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 5, tz.America_Pacific)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+
+        # Then
+        assert t1 <= t2
+        assert t1 != t2
+        assert t1 <= t3
+        assert t1 != t3
+        assert t2 <= t3
+        assert t3 == t3
+

@@ -24,6 +24,18 @@ jobs:
       - run: pipenv sync
       - run: pipenv run linter
       - run: pipenv run typechecker
-      - run: pipenv run tests
-      - run: pipenv run build
+      - run: pipenv run tests  # Helps to chatch
+      - run: pipenv run build  # if I forgot to build
+      - run: pipenv run tests  # and deploy to dist
+
+    emulator-tests:
+      name: test-on-emulator
+      runs-on: ubuntu-latest
+      container:
+        image: micropython/unix
+
+
+      steps:
+        - uses: actions/checkout@v3
+        - run: micropython run_tests_on_emulator.py
 

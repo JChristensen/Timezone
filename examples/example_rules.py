@@ -30,7 +30,7 @@ def changeTz():
     loc = tz.toLocal(utc)
     print(time.gmtime(loc))
 
-    tz.setRules(cst, cdt)
+    tz._setRules(cst, cdt)
     loc = tz.toLocal(utc)
     print(time.gmtime(loc))
 

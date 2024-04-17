@@ -17,7 +17,7 @@ CENT_02 = 1642089523  # (2022, 1, 13, 9, 58, 43)
 # upython and unix python, use 2 different EPOCHs
 UPYTHON_EPOCH = 946706400  # (2000, 1, 1, 0, 0, 0)
 
-if sys.implementation.name == "micropython":
+if sys.implementation.name == "micropython" and not "linux" in sys.implementation._machine:
     UTC_01 -= UPYTHON_EPOCH
     EAST_01 -= UPYTHON_EPOCH
     CENT_01 -= UPYTHON_EPOCH
@@ -111,29 +111,6 @@ class TestZones(unittest.TestCase):
 
         # Then
         assert loc == CENT_01, f"{loc} == {CENT_01}"
-
-
-    def test_change_rules_est_to_cst(self):
-
-        # Given
-        edt = TimeChangeRule("EDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, -240)
-        est = TimeChangeRule("EST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -300)
-        cdt = TimeChangeRule("CDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, -300)
-        cst = TimeChangeRule("CST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -360)
-        tz = Timezone(est, edt)
-
-        # When
-        eloc = tz.toLocal(UTC_01)
-
-        # Then
-        assert eloc == EAST_01
-
-        # Now When
-        tz.setRules(cst, cdt)
-        cloc = tz.toLocal(UTC_01)
-
-        # Then
-        assert cloc == CENT_01, f"{cloc} == {CENT_01}"
 
 
     def test_utc_is_dst(self):

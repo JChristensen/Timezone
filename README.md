@@ -71,6 +71,9 @@ mpremote mip install github:shaneapowell/utimezone/package-raw.json
   ```
 
 
-## Examples
+# Examples
 see the [**examples**](examples) folder.
+
+# API Documentation
+Read the [API Docs](docs/API.md)
 

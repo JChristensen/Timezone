@@ -5,6 +5,8 @@ Intended to be used on micropython devices.
 
 Python Timezone Library Copyright (C) 2018 by Jack Christensen and
 licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
+
+**See utzlist.py** for examples.
 """
 import time
 import utztime.tztime
@@ -47,20 +49,22 @@ class TimeChangeRule:
     """
     Simple data structure to define a change over rule
     """
-    abbrev: str
-    week: int
-    dow: int
-    month: int
-    hour: int
-    offset: int
 
     def __init__(self,
-                 abbrev: str,    # five chars max
-                 week: int,      # First, Second, Third, Fourth, or Last week of the month
-                 dow: int,       # day of week, 1=Sun, 2=Mon, ... 7=Sat
-                 month: int,     # 1=Jan, 2=Feb, ... 12=Dec
-                 hour: int,      # 0-23
-                 offset: int):   # offset from UTC in minutes
+                 abbrev: str,
+                 week: int,
+                 dow: int,
+                 month: int,
+                 hour: int,
+                 offset: int):
+        """
+        abbrev: 5 chars max. eg. DST, EDT, PST...
+        week: First, Second, Third, Fourth, or Last week of the month
+        dow: day of week, 1=Sun, 2=Mon, ... 7=Sat
+        month: 1=Jan, 2=Feb, ... 12=Dec
+        hour: # 0-23
+        offset: The timezone offset from UTC in minutes
+        """
         self.abbrev = abbrev
         self.week = week
         self.dow = dow
@@ -70,18 +74,90 @@ class TimeChangeRule:
 
 
 class Timezone:
-
+    """
+    A Immutable TimeZone rule definition.
+    A Daylight Savings Time rule, and a Standard Rule.
+    """
 
     def __init__(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule, name: str | None = None):
         """
         stdStart - The start of Standard Time Rule
         dstStart - The start of Daylight Savings Time Rule
-        name - Optional name of this timezone
+        name - Optional name of this timezone.  eg.  America/Chicago
         """
         self._name = name
-        self.setRules(stdStart, dstStart)
+        self._std = stdStart
+        self._dst = dstStart
+        self._dstLoc = 0
+        self._stdLoc = 0
+        self._dstUTC = 0
+        self._stdUTC = 0
+
+
+    def __str__(self) -> str:
+        """
+        Returns the "name" of this timezone
+        """
+        return self.getName()
+
+
+    def __gt__(self, other) -> bool:
+        """
+        [>] Operator. Compares the StandardTime offset
+        """
+        if not isinstance(other, Timezone):
+            return False
+        return self._std.offset > other._std.offset
+
+
+    def __lt__(self, other) -> bool:
+        """
+        [<] Operator. Compares the StandardTime offset
+        """
+        if not isinstance(other, Timezone):
+            return False
+        return self._std.offset < other._std.offset
+
+    def __ge__(self, other) -> bool:
+        """
+        [>=] Operator. Compares the StandardTime offset
+        """
+        if not isinstance(other, Timezone):
+            return False
+        return self._std.offset >= other._std.offset
+
+
+    def __le__(self, other) -> bool:
+        """
+        [<=] Operator. Compares the StandardTime offset
+        """
+        if not isinstance(other, Timezone):
+            return False
+        return self._std.offset <= other._std.offset
+
+
+    def __eq__(self, other) -> bool:
+        """
+        [==] Operator. Compares the StandardTime offset
+        """
+        if not isinstance(other, Timezone):
+            return False
+        return self._std.offset == other._std.offset
+
+
+    def __ne__(self, other) -> bool:
+        """
+        [!=] Operator. Compares the StandardTime offset
+        """
+        if not isinstance(other, Timezone):
+            return False
+        return self._std.offset != other._std.offset
+
 
     def getName(self):
+        """
+        Return the name of this timezone.
+        """
         return self._name
 
 
@@ -127,8 +203,8 @@ class Timezone:
 
     def toLocal(self, utc: int) -> int:
         """
-        Convert the given UTC time to local time, standard or                *
-        daylight time, as appropriate.                                       *
+        Convert the given UTC time to local time, standard or
+        daylight time, as appropriate.
         """
 
         # recalculate the time change points if needed
@@ -142,6 +218,7 @@ class Timezone:
             return utc + self._dst.offset * SECS_PER_MIN
         else:
             return utc + self._std.offset * SECS_PER_MIN
+
 
     def toUTC(self, local: int) -> int:
         """
@@ -164,7 +241,7 @@ class Timezone:
 
         If passed a local time value during the DST -> Local transition
         that occurs twice, it will be treated as the earlier time, i.e.
-        the time that occurs before the transistion.
+        the time that occurs before the transition.
 
         Calling this function with local times during a transition interval
         should be avoided!
@@ -218,13 +295,3 @@ class Timezone:
         else:                                  # southern hemisphere
             return not (local >= self._stdLoc and local < self._dstLoc)
 
-    def setRules(self, stdStart: TimeChangeRule, dstStart: TimeChangeRule):
-        """
-        Update the daylight and standard time rules from RAM.
-        """
-        self._std = stdStart
-        self._dst = dstStart
-        self._dstLoc = 0
-        self._stdLoc = 0
-        self._dstUTC = 0
-        self._stdUTC = 0
