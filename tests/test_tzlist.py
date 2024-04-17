@@ -129,7 +129,7 @@ class TestTZList(unittest.TestCase):
 
         # Then
         for name in nameList:
-            assert type(name) == str
+            assert isinstance(name, str)
 
 
     def test_get_list_names_matches_main_list(self):
