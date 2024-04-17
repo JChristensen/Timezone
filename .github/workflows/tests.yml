@@ -28,14 +28,15 @@ jobs:
       - run: pipenv run build  # if I forgot to build
       - run: pipenv run tests  # and deploy to dist
 
-    emulator-tests:
-      name: test-on-emulator
-      runs-on: ubuntu-latest
-      container:
-        image: micropython/unix
+  emulator-tests:
+    needs: lint-test-build
+    name: test-on-emulator
+    runs-on: ubuntu-latest
+    container:
+      image: micropython/unix
 
 
-      steps:
-        - uses: actions/checkout@v3
-        - run: micropython run_tests_on_emulator.py
+    steps:
+      - uses: actions/checkout@v3
+      - run: micropython run_tests_on_emulator.py
 
