@@ -6,14 +6,21 @@
     * [\_\_init\_\_](#utztime.utimezone.TimeChangeRule.__init__)
   * [Timezone](#utztime.utimezone.Timezone)
     * [\_\_init\_\_](#utztime.utimezone.Timezone.__init__)
+    * [\_\_str\_\_](#utztime.utimezone.Timezone.__str__)
+    * [\_\_gt\_\_](#utztime.utimezone.Timezone.__gt__)
+    * [\_\_lt\_\_](#utztime.utimezone.Timezone.__lt__)
+    * [\_\_ge\_\_](#utztime.utimezone.Timezone.__ge__)
+    * [\_\_le\_\_](#utztime.utimezone.Timezone.__le__)
+    * [\_\_eq\_\_](#utztime.utimezone.Timezone.__eq__)
+    * [\_\_ne\_\_](#utztime.utimezone.Timezone.__ne__)
     * [getName](#utztime.utimezone.Timezone.getName)
     * [toLocal](#utztime.utimezone.Timezone.toLocal)
     * [toUTC](#utztime.utimezone.Timezone.toUTC)
     * [utcIsDST](#utztime.utimezone.Timezone.utcIsDST)
     * [locIsDST](#utztime.utimezone.Timezone.locIsDST)
-    * [setRules](#utztime.utimezone.Timezone.setRules)
 * [utztime.utzlist](#utztime.utzlist)
   * [getTimezones](#utztime.utzlist.getTimezones)
+  * [getTimezoneNames](#utztime.utzlist.getTimezoneNames)
   * [getTimezone](#utztime.utzlist.getTimezone)
   * [setTimezone](#utztime.utzlist.setTimezone)
 * [utztime.tztime](#utztime.tztime)
@@ -125,7 +132,7 @@ offset: The timezone offset from UTC in minutes
 class Timezone()
 ```
 
-A TimeZone rule definition.
+A Immutable TimeZone rule definition.
 A Daylight Savings Time rule, and a Standard Rule.
 
 <a id="utztime.utimezone.Timezone.__init__"></a>
@@ -141,6 +148,76 @@ def __init__(stdStart: TimeChangeRule,
 stdStart - The start of Standard Time Rule
 dstStart - The start of Daylight Savings Time Rule
 name - Optional name of this timezone.  eg.  America/Chicago
+
+<a id="utztime.utimezone.Timezone.__str__"></a>
+
+#### \_\_str\_\_
+
+```python
+def __str__() -> str
+```
+
+Returns the "name" of this timezone
+
+<a id="utztime.utimezone.Timezone.__gt__"></a>
+
+#### \_\_gt\_\_
+
+```python
+def __gt__(other) -> bool
+```
+
+[>] Operator. Compares the StandardTime offset
+
+<a id="utztime.utimezone.Timezone.__lt__"></a>
+
+#### \_\_lt\_\_
+
+```python
+def __lt__(other) -> bool
+```
+
+[<] Operator. Compares the StandardTime offset
+
+<a id="utztime.utimezone.Timezone.__ge__"></a>
+
+#### \_\_ge\_\_
+
+```python
+def __ge__(other) -> bool
+```
+
+[>=] Operator. Compares the StandardTime offset
+
+<a id="utztime.utimezone.Timezone.__le__"></a>
+
+#### \_\_le\_\_
+
+```python
+def __le__(other) -> bool
+```
+
+[<=] Operator. Compares the StandardTime offset
+
+<a id="utztime.utimezone.Timezone.__eq__"></a>
+
+#### \_\_eq\_\_
+
+```python
+def __eq__(other) -> bool
+```
+
+[==] Operator. Compares the StandardTime offset
+
+<a id="utztime.utimezone.Timezone.__ne__"></a>
+
+#### \_\_ne\_\_
+
+```python
+def __ne__(other) -> bool
+```
+
+[!=] Operator. Compares the StandardTime offset
 
 <a id="utztime.utimezone.Timezone.getName"></a>
 
@@ -217,16 +294,6 @@ def locIsDST(local: int) -> bool
 Determine whether the given Local time is within the DST interval
 or the Standard time interval.
 
-<a id="utztime.utimezone.Timezone.setRules"></a>
-
-#### setRules
-
-```python
-def setRules(stdStart: TimeChangeRule, dstStart: TimeChangeRule)
-```
-
-Update the daylight and standard time rules from RAM.
-
 <a id="utztime.utzlist"></a>
 
 # utztime.utzlist
@@ -234,6 +301,8 @@ Update the daylight and standard time rules from RAM.
 Simply a list of defined TimeZones you can include in your package, or just copy the one you want.
 
 See the source file directly for a list of pre-defined TimeZones.
+
+The timezones are stored in sort order of the offset value of the StandardTime of each zone.
 
 ```python
 America_Newfoundland
@@ -255,7 +324,17 @@ America_Hawaii
 def getTimezones() -> list[tz.Timezone]
 ```
 
-Return a list of registered timezones. Sorted by the timezone name string.
+Return a COPY list of registered timezones. Sorted by Standard Time Offset (reverse) Highest to Lowest.
+
+<a id="utztime.utzlist.getTimezoneNames"></a>
+
+#### getTimezoneNames
+
+```python
+def getTimezoneNames() -> list[str]
+```
+
+Return a COPY list of the registered timezone names.  Sorted by Standard Time Offset (reverse) Highest to Lowest
 
 <a id="utztime.utzlist.getTimezone"></a>
 
@@ -267,7 +346,8 @@ def getTimezone(tzname: str) -> tz.Timezone | None
 
 Find the timezone for the provided tz standard string.
 This only references the pre-defined list of available timezones
-within this module.
+within this module. This lookup is case insensitive.
+Timezones are immutable.
 
 <a id="utztime.utzlist.setTimezone"></a>
 
@@ -305,7 +385,7 @@ use this class is to in fact have your system clock set to UTC time.
 #### \_\_init\_\_
 
 ```python
-def __init__(time: int | None = None, tz: utimezone.Timezone | None = None)
+def __init__(t: int | None = None, tz: utimezone.Timezone | None = None)
 ```
 
 Create a new instance of a TZTime object.
