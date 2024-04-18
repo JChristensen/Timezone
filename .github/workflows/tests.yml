@@ -74,5 +74,5 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: micropython run_tests_on_emulator.py
+      - run: micropython tools/run_tests_on_emulator.py
 

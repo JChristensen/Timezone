@@ -20,25 +20,25 @@ pydoc-markdown = "*"
 # python_version = "3.10"
 
 [scripts]
+
+# Checks
 linter = "flake8 src/utztime tests"
 typechecker = "mypy src/utztime tests  --check-untyped-defs"
-tests = "pytest -q tests"
+
+# build
+build = "python tools/mpy_cross_all.py -o dist src"
 
 # On Device deploy to /lib
-deploy = "rshell -p /dev/ttyACM0 cp -r dist/utztime /pyboard/lib"
+deploy = "rshell -f tools/deploy.rsh -p"
 
-# On Device Test Scripts
-deploy_tests_deps = "mpremote mip install unittest"
-deploy_tests = "rshell -p /dev/ttyACM0 cp -r tests /pyboard; ls"
-remove_tests = "rshell -p /dev/ttyACM0 rm -r /pyboard/tests"
-utests = "mpremote run run_tests_on_hardware.py"
-etests = "micropython run_tests_on_emulator.py"
+# Tests
+tests = "pytest -q tests"
+utests = "rshell -f tools/utest.rsh -p"
+etests = "micropython tools/run_tests_on_emulator.py"
 
 # On Device Run the example
 example = "mpremote run examples/example_tztime.py"
 
-# pre-mpy build
-build = "python mpy_cross_all.py -o dist src"
 
 # Docs
 generate_docs = "bash -c \"pydoc-markdown -p utztime -I src --render-toc >docs/API.md\""

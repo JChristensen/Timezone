@@ -62,9 +62,9 @@ mpremote mip install github:shaneapowell/utimezone/package-raw.json
   ```
 - Plug your micropython device into your computer.
 - Deploy the library
-  this command assumes your device appears as `/dev/ttyACM0`. If not, modify the `Pipfile` to match your devices path.
+  this command assumes your device appears as `/dev/ttyACM0`.
   ```
-  pipenv run deploy
+  pipenv run deploy /dev/ttyACM0
   ```
 - Try it out
   ```
@@ -78,3 +78,18 @@ see the [**examples**](examples) folder.
 # API Documentation
 Read the [API Docs](docs/API.md)
 
+# Unit Tests
+You can run the suite of unit tests on your micropython board, or a unix micropython emulator.
+## Local python
+```sh
+pipenv run tests
+```
+## On a device
+```sh
+pipenv run utests /dev/ttyACM0
+```
+## On an Emulator
+You'll need the `micropython` binary installed on your system.
+```sh
+pipenv run etests
+```
