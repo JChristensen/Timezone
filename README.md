@@ -93,3 +93,5 @@ You'll need the `micropython` binary installed on your system.
 ```sh
 pipenv run etests
 ```
+
+# Adding New TimeZones

@@ -1,22 +1,8 @@
 """
-Simply a list of defined TimeZones you can include in your package, or just copy the one you want.
-
-See the source file directly for a list of pre-defined TimeZones.
-
-The timezones are stored in sort order of the offset value of the StandardTime of each zone.
-
-```python
-America_Newfoundland
-America_Atlantic
-America_Eastern
-America_Central
-America_Mountain
-America_MountainNoDST
-America_Pacific
-America_Alaska
-America_Hawaii
-```
-
+A utility class where you can define and store your timezones.
+You can use each timezone definition yourself, and store them in your own lists.
+Or, you can define and assign them here for a more common interface.
+Including the built-in sorting by StandardTime
 """
 from . import utimezone as tz
 
@@ -69,77 +55,9 @@ def setTimezone(tz: tz.Timezone):
     _TIMEZONES.sort(reverse=True)
 
 
-# These pre defined timezones, are in order here of first-to-last on the globe.
-
-America_Newfoundland = tz.Timezone(
-    tz.TimeChangeRule("NST", tz.FIRST, tz.SUN, tz.NOV, 2, -(4 * 60) + 30),
-    tz.TimeChangeRule("NDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(3 * 60) + 30),
-    'Canada/Newfoundland'
-)
-
-America_Atlantic = tz.Timezone(
-    tz.TimeChangeRule("AST", tz.FIRST, tz.SUN, tz.NOV, 2, -(4 * 60)),
-    tz.TimeChangeRule("ADT", tz.SECOND, tz.SUN, tz.MAR, 2, -(3 * 60)),
-    'Atlantic/Bermuda'
-)
-
-America_Eastern = tz.Timezone(
-    tz.TimeChangeRule("EST", tz.FIRST, tz.SUN, tz.NOV, 2, -(5 * 60)),
-    tz.TimeChangeRule("EDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(4 * 60)),
-    'America/New_York'
-)
-
-America_Central = tz.Timezone(
-    tz.TimeChangeRule("CST", tz.FIRST, tz.SUN, tz.NOV, 2, -(6 * 60)),
-    tz.TimeChangeRule("CDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(5 * 60)),
-    'America/Chicago'
-)
-
-America_Mountain = tz.Timezone(
-    tz.TimeChangeRule("MST", tz.FIRST, tz.SUN, tz.NOV, 2, -(7 * 60)),
-    tz.TimeChangeRule("MDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(6 * 60)),
-    'America/Denver'
-)
-
-America_MountainNoDST = tz.Timezone(
-    tz.TimeChangeRule("MST", tz.FIRST, tz.SUN, tz.NOV, 2, -(7 * 60)),
-    tz.TimeChangeRule("MST", tz.SECOND, tz.SUN, tz.MAR, 2, -(7 * 60)),
-    'America/Phoenix'
-)
-
-America_Pacific = tz.Timezone(
-    tz.TimeChangeRule("PST", tz.FIRST, tz.SUN, tz.NOV, 2, -(8 * 60)),
-    tz.TimeChangeRule("PDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(7 * 60)),
-    'America/Los_Angeles'
-)
-
-America_Alaska = tz.Timezone(
-    tz.TimeChangeRule("AKST", tz.FIRST, tz.SUN, tz.NOV, 2, -(9 * 60)),
-    tz.TimeChangeRule("AKDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(8 * 60)),
-    'America/Anchorage'
-)
-
-America_Hawaii = tz.Timezone(
-    tz.TimeChangeRule("HST", tz.FIRST, tz.SUN, tz.NOV, 2, -(10 * 60)),
-    tz.TimeChangeRule("HDT", tz.SECOND, tz.SUN, tz.MAR, 2, -(9 * 60)),
-    'Pacific/Honolulu'
-)
-
-
-def _setDefaultTimezones():
+def clear():
     """
-    Pre-SEt, and re-Set the build-in timezone list.
-    Helpful for unit-testing
+    Clear all timezones from the timezone list.
+    Mostly helpful for unit-testing.
     """
     _TIMEZONES.clear()
-    setTimezone(America_Newfoundland)
-    setTimezone(America_Atlantic)
-    setTimezone(America_Eastern)
-    setTimezone(America_Central)
-    setTimezone(America_Mountain)
-    setTimezone(America_MountainNoDST)
-    setTimezone(America_Pacific)
-    setTimezone(America_Hawaii)
-
-
-_setDefaultTimezones()

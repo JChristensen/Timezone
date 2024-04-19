@@ -1,7 +1,8 @@
 from utztime import TZTime
-import utztime.utzlist as tz
 import unittest
 import time
+from utztime.tz.america.new_york import America_New_York
+from utztime.tz.america.los_angeles import America_Los_Angeles
 
 
 
@@ -39,7 +40,7 @@ class TestTZTime(unittest.TestCase):
     def test_create_specific_EST_time(self):
 
         # When
-        t = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Eastern)
+        t = TZTime.create(2001, 2, 3, 4, 5, 6, America_New_York)
 
         # Then
         assert t.year() == 2001
@@ -48,14 +49,14 @@ class TestTZTime(unittest.TestCase):
         assert t.hour() == 4
         assert t.minute() == 5
         assert t.second() == 6
-        assert t.tz() == tz.America_Eastern
+        assert t.tz() == America_New_York
 
 
     def test_UTC_is_before_EST(self):
 
         # Given
         utc = TZTime.create(2001, 2, 3, 4, 5, 6)
-        est = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Eastern)
+        est = TZTime.create(2001, 2, 3, 4, 5, 6, America_New_York)
 
         # Then
         assert utc < est
@@ -64,8 +65,8 @@ class TestTZTime(unittest.TestCase):
     def test_PST_is_after_EST(self):
 
         # Given
-        pst = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        est = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Eastern)
+        pst = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        est = TZTime.create(2001, 2, 3, 4, 5, 6, America_New_York)
 
         # Then
         assert pst > est
@@ -74,9 +75,9 @@ class TestTZTime(unittest.TestCase):
     def test_time_eq(self):
 
         # Given
-        t1 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, America_New_York)
 
         # Then
         assert t1 == t2
@@ -87,9 +88,9 @@ class TestTZTime(unittest.TestCase):
     def test_time_ne(self):
 
         # Given
-        t1 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t2 = TZTime.create(2001, 2, 3, 4, 5, 7, tz.America_Pacific)
-        t3 = TZTime.create(2001, 2, 3, 7, 5, 8, tz.America_Eastern)
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 7, America_Los_Angeles)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 8, America_New_York)
 
         # Then
         assert t1 != t2
@@ -100,9 +101,9 @@ class TestTZTime(unittest.TestCase):
     def test_time_gt(self):
 
         # Given
-        t1 = TZTime.create(2001, 2, 3, 4, 5, 7, tz.America_Pacific)
-        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 7, America_Los_Angeles)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, America_New_York)
 
         # Then
         assert t1 > t2
@@ -114,9 +115,9 @@ class TestTZTime(unittest.TestCase):
     def test_time_lt(self):
 
         # Given
-        t1 = TZTime.create(2001, 2, 3, 4, 5, 5, tz.America_Pacific)
-        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 5, America_Los_Angeles)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, America_New_York)
 
         # Then
         assert t1 < t2
@@ -128,9 +129,9 @@ class TestTZTime(unittest.TestCase):
     def test_time_ge(self):
 
         # Given
-        t1 = TZTime.create(2001, 2, 3, 4, 5, 7, tz.America_Pacific)
-        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 7, America_Los_Angeles)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, America_New_York)
 
         # Then
         assert t1 >= t2
@@ -144,9 +145,9 @@ class TestTZTime(unittest.TestCase):
     def test_time_le(self):
 
         # Given
-        t1 = TZTime.create(2001, 2, 3, 4, 5, 5, tz.America_Pacific)
-        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, tz.America_Pacific)
-        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, tz.America_Eastern)
+        t1 = TZTime.create(2001, 2, 3, 4, 5, 5, America_Los_Angeles)
+        t2 = TZTime.create(2001, 2, 3, 4, 5, 6, America_Los_Angeles)
+        t3 = TZTime.create(2001, 2, 3, 7, 5, 6, America_New_York)
 
         # Then
         assert t1 <= t2

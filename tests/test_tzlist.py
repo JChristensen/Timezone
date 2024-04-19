@@ -2,13 +2,23 @@ import utztime.utzlist as tzl
 from utztime import utimezone
 from utztime.utimezone import TimeChangeRule, Timezone
 import unittest
+from utztime.tz.america.new_york import America_New_York
+from utztime.tz.america.chicago import America_Chicago
+from utztime.tz.america.phoenix import America_Phoenix
+from utztime.tz.america.los_angeles import America_Los_Angeles
 
 
 class TestTZList(unittest.TestCase):
 
 
     def setUp(self):
-        tzl._setDefaultTimezones()
+
+        tzl.clear()
+        tzl.setTimezone(America_New_York)
+        tzl.setTimezone(America_Chicago)
+        tzl.setTimezone(America_Los_Angeles)
+        tzl.setTimezone(America_Phoenix)
+
 
 
     def test_find_timezone(self):
