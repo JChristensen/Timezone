@@ -39,4 +39,3 @@ def testStdAndDst(stdTime: TZTime, dstTime: TZTime, tz: Timezone, expectStd: boo
     assert stdTime.isDST() is not expectStd
     assert dstTime.isDST() is expectDst
     assert dstTime.isSTD() is not expectDst
-

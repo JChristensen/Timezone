@@ -1,10 +1,8 @@
 from utztime import TZTime
-import utztime.tztime
 import unittest
 import time
 from utztime.tz.us import America_New_York
 from utztime.tz.us import America_Los_Angeles
-from . import util
 
 
 class test_tz_time(unittest.TestCase):

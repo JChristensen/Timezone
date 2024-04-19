@@ -1,5 +1,4 @@
 from utztime.tztime import TZTime
-from utztime.utimezone import Timezone
 import unittest
 import utztime.tz.ca as ca
 from . import util

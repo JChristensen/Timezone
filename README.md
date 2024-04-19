@@ -125,3 +125,30 @@ Finally, create a unit-test for the new zone file, or add to the existing one.
 You only need to test zones that are not canonical zones (not linked).
 see `/tests/test_tz_us.py` and `/tests/test_tz_ca.py` for examples. There is a basic utility test function created that does the
 rudimentary testing needed for each defined zone.
+
+If you have created a new `test_tz_XX.py` file, you must also add it's include to the `/test/__init__.py` file
+
+
+# Before Submitting a PR
+```sh
+# Run the linter and typechecker
+pipenv run linter
+pipenv run typechecker
+
+# Build the .mpy files
+pipenv run build
+
+# Run the tests locally. Take note of the number of tests run.  eg.. 50
+pipenv run tests
+
+# Run the tests in a local micropython emulator.  Make sure the same number of tests ran as above.
+# If the count is off, you might have forgot to add your new test.py file to the `/test/__init__.py` file
+pipenv run etests
+
+# Run the tests on a device.
+# This could prove challenging on smaller upy devices.
+# I happen to have some Xaio esp32S3 devices with 8M of psram on board.
+# If this becomes an issue, I'll figure out a simple way to break the tests into segments.
+pipenv run deploy /dev/ttyACM0
+pipenv run utests /dev/ttyACM0
+```
