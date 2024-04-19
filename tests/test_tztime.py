@@ -1,12 +1,25 @@
 from utztime import TZTime
+import utztime.tztime
 import unittest
 import time
-from utztime.tz.america.new_york import America_New_York
-from utztime.tz.america.los_angeles import America_Los_Angeles
-
+from utztime.tz.us import America_New_York
+from utztime.tz.us import America_Los_Angeles
+from . import util
 
 
 class TestTZTime(unittest.TestCase):
+
+
+    def test_mktime(self):
+
+        # Given
+        ts = util.unixToUpyTime(1678798800)  # 2023/03/14 08:00:00
+
+        # When
+        t = utztime.tztime._mktime(year=2023, month=3, day=14, hour=8, min=0, sec=0)
+
+        # Then
+        assert ts == t, f"{ts} == {t}"
 
 
     def test_create_default_tztime(self):
@@ -156,3 +169,17 @@ class TestTZTime(unittest.TestCase):
         assert t1 != t3
         assert t2 <= t3
         assert t3 == t3
+
+
+    # def test_plus_seconds(self):
+
+    #     assert False
+
+
+    # def test_minus_seconds(self):
+
+    #     assert False
+
+    # def test_with_seconds(self):
+
+    #     assert False

@@ -29,6 +29,9 @@ The **utztime** library is made up of 4 primary parts.
 - A **TZTime** Object to handle and manipulate time, avoiding the direct use of the standard `time` lib.
 - A **utzlist** Object with some pre-defined American TimeZone definitions.
 
+# Limitation
+- Epoch!  This library relies on the system `time` library.  Due to that fact, calculating timezone specific values before teh system Epoch (2000 for upy, 1970 for unix) fails.
+
 # Installation
 ## MIP
 Install `utztime` with [mpremote](https://docs.micropython.org/en/latest/reference/packages.html#installing-packages-with-mpremote) into `/lib/utztime` on the device.
@@ -94,4 +97,19 @@ You'll need the `micropython` binary installed on your system.
 pipenv run etests
 ```
 
-# Adding New TimeZones
+# Adding New TimeZones to this Library.
+I'm more than happy to accept PullRequests to add new TimeZone definitions.
+I'm Canadian Born, living in USA. So, no surprise I started with the time zones I'm familiar with.
+Just follow these guidelines in creating a new TimeZone definition.
+
+Reference the standard TimeZone identifier names to figure out what directory, and filename(s) you'll be creating.
+
+[https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+
+Simply find the time zone (or zones) by the `TZ Identifier` in this list.
+
+## File Name
+The name of your timezone definition(s) file must be lowercase, and should be placed in a directory/file pattern similar to the onces already added.
+see `tz/america/phoenix` as an example.  It is a good example as it happens to contain 3 definitions in one file.
+
+If you wish to add a timezone with the standard TZ identifier of `

@@ -12,6 +12,7 @@ tox = "==4.14.2"
 pytest = "==8.1.1"
 mpy-cross = "==1.22.2"
 pydoc-markdown = "*"
+arrow = "==1.2.3"
 
 [dev-packages]
 

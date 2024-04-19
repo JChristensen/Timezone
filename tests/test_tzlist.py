@@ -2,10 +2,10 @@ import utztime.utzlist as tzl
 from utztime import utimezone
 from utztime.utimezone import TimeChangeRule, Timezone
 import unittest
-from utztime.tz.america.new_york import America_New_York
-from utztime.tz.america.chicago import America_Chicago
-from utztime.tz.america.phoenix import America_Phoenix
-from utztime.tz.america.los_angeles import America_Los_Angeles
+from utztime.tz.us import America_New_York
+from utztime.tz.us import America_Chicago
+from utztime.tz.us import America_Phoenix
+from utztime.tz.us import America_Los_Angeles
 
 
 class TestTZList(unittest.TestCase):
@@ -66,7 +66,7 @@ class TestTZList(unittest.TestCase):
         edt = TimeChangeRule("EDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, -240)
         est = TimeChangeRule("EST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -300)
         name = "Australia/Sydney"
-        tz = Timezone(est, edt, name)
+        tz = Timezone(name=name, std=est, dst=edt)
         preListSize = len(tzl.getTimezones())
 
         # When
@@ -84,7 +84,7 @@ class TestTZList(unittest.TestCase):
         edt = TimeChangeRule("EDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, -240)
         est = TimeChangeRule("EST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, -300)
         name = "America/Phoenix"
-        tz = Timezone(est, edt, name)
+        tz = Timezone(name=name, std=est, dst=edt)
         preListSize = len(tzl.getTimezones())
 
         # When
@@ -122,7 +122,7 @@ class TestTZList(unittest.TestCase):
         edt = TimeChangeRule("AEDT", utimezone.SECOND, utimezone.SUN, utimezone.MAR, 2, (60 * 11))
         est = TimeChangeRule("AEST", utimezone.FIRST, utimezone.SUN, utimezone.NOV, 2, (60 * 10))
         name = "Australia/Sydney"
-        tz = Timezone(est, edt, name)
+        tz = Timezone(name=name, std=est, dst=edt)
 
         # When
         tzl.setTimezone(tz)
