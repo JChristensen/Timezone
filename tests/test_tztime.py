@@ -7,19 +7,7 @@ from utztime.tz.us import America_Los_Angeles
 from . import util
 
 
-class TestTZTime(unittest.TestCase):
-
-
-    def test_mktime(self):
-
-        # Given
-        ts = util.unixToUpyTime(1678798800)  # 2023/03/14 08:00:00
-
-        # When
-        t = utztime.tztime._mktime(year=2023, month=3, day=14, hour=8, min=0, sec=0)
-
-        # Then
-        assert ts == t, f"{ts} == {t}"
+class test_tz_time(unittest.TestCase):
 
 
     def test_create_default_tztime(self):

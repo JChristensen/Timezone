@@ -2,7 +2,7 @@ import sys
 import time
 from . import utimezone
 
-_utime = True if sys.implementation.name == "micropython" else False
+_isupy = True if sys.implementation.name == "micropython" else False
 
 WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat']
 
@@ -23,7 +23,7 @@ def _mktime(year: int, month: int, day: int, hour: int, min: int, sec: int) -> i
     dow: 0-6. Monday == 0
     yd: 1-366
     """
-    if _utime:
+    if _isupy:
         return int(time.mktime((year, month, day, hour, min, sec, None, None)))  # type: ignore [arg-type]
     else:
         return int(time.mktime((year, month, day, hour, min, sec, -1, -1, -1)))
@@ -87,8 +87,9 @@ class TZTime:
 
         sec: 0-61
         """
-        t = _mktime(year, month, day, hour, min, sec)
+        t = _mktime(year=year, month=month, day=day, hour=hour, min=min, sec=sec)
         return TZTime(t, tz)
+
 
     def isDst(self) -> bool:
         """
@@ -169,6 +170,8 @@ class TZTime:
     def _gmtime(self) -> tuple:
         """
         Return the the underlying structured time tuple.
+        We fetch the localtime, because on micropython, this is always the same as gmtime due to the lack of tz capacity.
+        On unix python, gmtime converts for us, and we dont' want that.  So, localtime it is.
         """
         if self._stime is None:
             self._stime = time.localtime(self._time)

@@ -8,7 +8,7 @@ from utztime.tz.us import America_Phoenix
 from utztime.tz.us import America_Los_Angeles
 
 
-class TestTZList(unittest.TestCase):
+class test_tzlist(unittest.TestCase):
 
 
     def setUp(self):

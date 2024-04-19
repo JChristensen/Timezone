@@ -4,7 +4,7 @@ import unittest
 import utztime.tz.us as us
 
 
-class TestTZUS(unittest.TestCase):
+class test_tz_us(unittest.TestCase):
     pass
 
 
