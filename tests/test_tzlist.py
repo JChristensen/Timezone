@@ -14,10 +14,10 @@ class test_tzlist(unittest.TestCase):
     def setUp(self):
 
         tzl.clear()
-        tzl.setTimezone(America_New_York)
-        tzl.setTimezone(America_Chicago)
-        tzl.setTimezone(America_Los_Angeles)
-        tzl.setTimezone(America_Phoenix)
+        tzl.registerTimezone(America_New_York)
+        tzl.registerTimezone(America_Chicago)
+        tzl.registerTimezone(America_Los_Angeles)
+        tzl.registerTimezone(America_Phoenix)
 
 
 
@@ -70,7 +70,7 @@ class test_tzlist(unittest.TestCase):
         preListSize = len(tzl.getTimezones())
 
         # When
-        tzl.setTimezone(tz)
+        tzl.registerTimezone(tz)
 
         # Then
         assert len(tzl.getTimezones()) == (preListSize + 1)
@@ -88,7 +88,7 @@ class test_tzlist(unittest.TestCase):
         preListSize = len(tzl.getTimezones())
 
         # When
-        tzl.setTimezone(tz)
+        tzl.registerTimezone(tz)
         newTZ = tzl.getTimezone(name)
 
         # Then
@@ -125,7 +125,7 @@ class test_tzlist(unittest.TestCase):
         tz = Timezone(name=name, std=est, dst=edt)
 
         # When
-        tzl.setTimezone(tz)
+        tzl.registerTimezone(tz)
         lst = tzl.getTimezones()
 
         # Then

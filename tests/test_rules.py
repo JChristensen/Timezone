@@ -1,7 +1,6 @@
 from utztime import utimezone, TZTime
 from utztime.utimezone import TimeChangeRule, Timezone
 import unittest
-import sys
 from . import util
 
 

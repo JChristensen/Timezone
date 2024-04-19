@@ -4,8 +4,14 @@
 * [utztime.utimezone](#utztime.utimezone)
   * [TimeChangeRule](#utztime.utimezone.TimeChangeRule)
     * [\_\_init\_\_](#utztime.utimezone.TimeChangeRule.__init__)
+    * [clone](#utztime.utimezone.TimeChangeRule.clone)
+    * [\_\_eq\_\_](#utztime.utimezone.TimeChangeRule.__eq__)
+    * [\_\_ne\_\_](#utztime.utimezone.TimeChangeRule.__ne__)
+    * [toTime](#utztime.utimezone.TimeChangeRule.toTime)
   * [Timezone](#utztime.utimezone.Timezone)
     * [\_\_init\_\_](#utztime.utimezone.Timezone.__init__)
+    * [clone](#utztime.utimezone.Timezone.clone)
+    * [link](#utztime.utimezone.Timezone.link)
     * [\_\_str\_\_](#utztime.utimezone.Timezone.__str__)
     * [\_\_gt\_\_](#utztime.utimezone.Timezone.__gt__)
     * [\_\_lt\_\_](#utztime.utimezone.Timezone.__lt__)
@@ -17,17 +23,21 @@
     * [toLocal](#utztime.utimezone.Timezone.toLocal)
     * [toUTC](#utztime.utimezone.Timezone.toUTC)
     * [utcIsDST](#utztime.utimezone.Timezone.utcIsDST)
+    * [utcIsSTD](#utztime.utimezone.Timezone.utcIsSTD)
     * [locIsDST](#utztime.utimezone.Timezone.locIsDST)
+    * [locIsSTD](#utztime.utimezone.Timezone.locIsSTD)
 * [utztime.utzlist](#utztime.utzlist)
   * [getTimezones](#utztime.utzlist.getTimezones)
   * [getTimezoneNames](#utztime.utzlist.getTimezoneNames)
   * [getTimezone](#utztime.utzlist.getTimezone)
-  * [setTimezone](#utztime.utzlist.setTimezone)
+  * [registerTimezone](#utztime.utzlist.registerTimezone)
+  * [clear](#utztime.utzlist.clear)
 * [utztime.tztime](#utztime.tztime)
   * [TZTime](#utztime.tztime.TZTime)
     * [\_\_init\_\_](#utztime.tztime.TZTime.__init__)
     * [now](#utztime.tztime.TZTime.now)
     * [create](#utztime.tztime.TZTime.create)
+    * [isDst](#utztime.tztime.TZTime.isDst)
     * [\_\_str\_\_](#utztime.tztime.TZTime.__str__)
     * [\_\_repr\_\_](#utztime.tztime.TZTime.__repr__)
     * [\_\_eq\_\_](#utztime.tztime.TZTime.__eq__)
@@ -58,6 +68,10 @@
     * [withSeconds](#utztime.tztime.TZTime.withSeconds)
     * [withTimezone](#utztime.tztime.TZTime.withTimezone)
   * [toISO8601](#utztime.tztime.toISO8601)
+* [utztime.tz](#utztime.tz)
+* [utztime.tz.us](#utztime.tz.us)
+* [utztime.tz.bm](#utztime.tz.bm)
+* [utztime.tz.ca](#utztime.tz.ca)
 
 <a id="utztime"></a>
 
@@ -70,17 +84,29 @@ Root package.
 from utztime import TZTime
 ```
 
-**Access to the time zone rules**
+**Access to the timezone and rules classes**
 ```python
-from utztime.utimezone import TimeChangeRule, Timezone
+from utztime import TimeChangeRule, Timezone
 ```
 
 **Access to the pre-defined list of timezones**
 ```python
-import utztime.tzlist
+import utztime.tz.us
+import utztime.tz.ca
 ```
 
-There is a `EPOCH` const that can be used here if desired.  It is the uPython EPOCH of Jan 1 2000. Not the unix EPOCH of Jan 1 1970
+**To Populate the tzlist registry**
+```python
+import utztime.tz.us
+import utztime.tzlist
+utztime.tzlist.registerTimezone(utztime.tz.us.America_Los_Angeles)
+utztime.tzlist.registerTimezone(utztime.tz.us.America_Chicago)
+utztime.tzlist.registerTimezone(utztime.tz.us.America_Phoenix)
+utztime.tzlist.registerTimezone(utztime.tz.us.America_New_York)
+```
+
+There is a `EPOCH` const that can be used here if desired.  It is the uPython EPOCH of Jan 1 2000. Not the unix EPOCH of Jan 1 1970.
+This EPOCH value is self adjusting to the platforms actual EPOCH
 ```python
 EPOCH
 ```
@@ -96,7 +122,9 @@ Intended to be used on micropython devices.
 Python Timezone Library Copyright (C) 2018 by Jack Christensen and
 licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 
-**See utzlist.py** for examples.
+**See tz/us.py** for examples.
+
+Not Currently Thread Safe. Uses an internal field state tracked by year.  I'll fix this in the near future.
 
 <a id="utztime.utimezone.TimeChangeRule"></a>
 
@@ -113,16 +141,58 @@ Simple data structure to define a change over rule
 #### \_\_init\_\_
 
 ```python
-def __init__(abbrev: str, week: int, dow: int, month: int, hour: int,
+def __init__(abbrev: str, whichDow: int, dow: int, month: int, hour: int,
              offset: int)
 ```
 
 abbrev: 5 chars max. eg. DST, EDT, PST...
-week: First, Second, Third, Fourth, or Last week of the month
-dow: day of week, 1=Sun, 2=Mon, ... 7=Sat
-month: 1=Jan, 2=Feb, ... 12=Dec
+whichDow: Which day of our dow? see internal FIRST, SECOND, THIRD, etc
+dow: day of week, see internal SUN, MON, TUE.. ETC
+month: Which Month.  see internal JAN, FEB, MAR.. etc
 hour: # 0-23
 offset: The timezone offset from UTC in minutes
+
+<a id="utztime.utimezone.TimeChangeRule.clone"></a>
+
+#### clone
+
+```python
+def clone() -> 'TimeChangeRule'
+```
+
+Create a clone of this rule
+
+<a id="utztime.utimezone.TimeChangeRule.__eq__"></a>
+
+#### \_\_eq\_\_
+
+```python
+def __eq__(other) -> bool
+```
+
+[==] Operator.  Compares all fields except the abbrev.  Used in the unit test that attempts
+    to find re-defined rules.
+
+<a id="utztime.utimezone.TimeChangeRule.__ne__"></a>
+
+#### \_\_ne\_\_
+
+```python
+def __ne__(other) -> bool
+```
+
+[!=] Operator.
+
+<a id="utztime.utimezone.TimeChangeRule.toTime"></a>
+
+#### toTime
+
+```python
+def toTime(yr: int) -> int
+```
+
+Convert using this time change rule to a time value
+for the given year.
 
 <a id="utztime.utimezone.Timezone"></a>
 
@@ -140,14 +210,36 @@ A Daylight Savings Time rule, and a Standard Rule.
 #### \_\_init\_\_
 
 ```python
-def __init__(stdStart: TimeChangeRule,
-             dstStart: TimeChangeRule,
-             name: str | None = None)
+def __init__(name: str, std: TimeChangeRule, dst: TimeChangeRule | None)
 ```
 
-stdStart - The start of Standard Time Rule
-dstStart - The start of Daylight Savings Time Rule
-name - Optional name of this timezone.  eg.  America/Chicago
+name - name of this timezone.  eg.  America/Chicago
+stdStart - The start of Standard Time Rule.
+dstStart - Optional. The start of Daylight Savings Time Rule. Set to None if this TZ observes only standard time.
+
+<a id="utztime.utimezone.Timezone.clone"></a>
+
+#### clone
+
+```python
+def clone(name: str, shallow: bool = False) -> 'Timezone'
+```
+
+Create a complete copy of this timezone.
+Provide a new-name for this clone.
+shallow will not clone the rules, but instead use the same instance.
+This has the benefit of being lighter weight on memory, but running the
+risk of side-affects if used incorrectly
+
+<a id="utztime.utimezone.Timezone.link"></a>
+
+#### link
+
+```python
+def link(name: str) -> 'Timezone'
+```
+
+Shortcut to create a shallow clone
 
 <a id="utztime.utimezone.Timezone.__str__"></a>
 
@@ -207,7 +299,7 @@ def __le__(other) -> bool
 def __eq__(other) -> bool
 ```
 
-[==] Operator. Compares the StandardTime offset
+[==] Operator. Compares the 2 std & dst rules. Ignores the name differences
 
 <a id="utztime.utimezone.Timezone.__ne__"></a>
 
@@ -283,6 +375,16 @@ def utcIsDST(utc: int) -> bool
 Determine whether the given UTC time is within the DST interval
 or the Standard time interval
 
+<a id="utztime.utimezone.Timezone.utcIsSTD"></a>
+
+#### utcIsSTD
+
+```python
+def utcIsSTD(utc: int) -> bool
+```
+
+Convenient wrapper to utcIsDST
+
 <a id="utztime.utimezone.Timezone.locIsDST"></a>
 
 #### locIsDST
@@ -294,27 +396,24 @@ def locIsDST(local: int) -> bool
 Determine whether the given Local time is within the DST interval
 or the Standard time interval.
 
+<a id="utztime.utimezone.Timezone.locIsSTD"></a>
+
+#### locIsSTD
+
+```python
+def locIsSTD(utc: int) -> bool
+```
+
+Convenient wrapper to locIsDST
+
 <a id="utztime.utzlist"></a>
 
 # utztime.utzlist
 
-Simply a list of defined TimeZones you can include in your package, or just copy the one you want.
-
-See the source file directly for a list of pre-defined TimeZones.
-
-The timezones are stored in sort order of the offset value of the StandardTime of each zone.
-
-```python
-America_Newfoundland
-America_Atlantic
-America_Eastern
-America_Central
-America_Mountain
-America_MountainNoDST
-America_Pacific
-America_Alaska
-America_Hawaii
-```
+A utility class where you can define and store your timezones.
+You can use each timezone definition yourself, and store them in your own lists.
+Or, you can define and assign them here for a more common interface.
+Including the built-in sorting by StandardTime
 
 <a id="utztime.utzlist.getTimezones"></a>
 
@@ -349,17 +448,28 @@ This only references the pre-defined list of available timezones
 within this module. This lookup is case insensitive.
 Timezones are immutable.
 
-<a id="utztime.utzlist.setTimezone"></a>
+<a id="utztime.utzlist.registerTimezone"></a>
 
-#### setTimezone
+#### registerTimezone
 
 ```python
-def setTimezone(tz: tz.Timezone)
+def registerTimezone(tz: tz.Timezone)
 ```
 
 Set/Add to the internal list of available timezones.
 This simply makes the provided timezone accessible
 through the getTimezone() function
+
+<a id="utztime.utzlist.clear"></a>
+
+#### clear
+
+```python
+def clear()
+```
+
+Clear all timezones from the timezone list.
+Mostly helpful for unit-testing.
 
 <a id="utztime.tztime"></a>
 
@@ -422,6 +532,26 @@ def create(year: int = 0,
 ```
 
 Create a new instance with the given time values, and specific timezone. A None tz is treated like Zulu/UTC
+
+month: 1-12
+
+day: 1-31
+
+hour: 0-23
+
+min: 0-59
+
+sec: 0-61
+
+<a id="utztime.tztime.TZTime.isDst"></a>
+
+#### isDst
+
+```python
+def isDst() -> bool
+```
+
+Return if this time, and the given timezone, is a DST time or not.
 
 <a id="utztime.tztime.TZTime.__str__"></a>
 
@@ -598,7 +728,7 @@ Get the TimeZone. Returns None for UTC
 #### toTimezone
 
 ```python
-def toTimezone(tz: utimezone.Timezone) -> 'TZTime'
+def toTimezone(tz: utimezone.Timezone | None) -> 'TZTime'
 ```
 
 Convert this time, to the new timezone.
@@ -728,4 +858,20 @@ Take the unix time t, and convert it into an ISO8601 string.
 Use the tz as the Zone designator.  None for Zulu or Local.
 The tz does not convert the time, it adds the correct offset value
 used at the end.
+
+<a id="utztime.tz"></a>
+
+# utztime.tz
+
+<a id="utztime.tz.us"></a>
+
+# utztime.tz.us
+
+<a id="utztime.tz.bm"></a>
+
+# utztime.tz.bm
+
+<a id="utztime.tz.ca"></a>
+
+# utztime.tz.ca
 

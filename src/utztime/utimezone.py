@@ -12,7 +12,6 @@ Not Currently Thread Safe. Uses an internal field state tracked by year.  I'll f
 """
 import time
 import utztime.tztime
-import sys
 
 # week values for TimeChangeRule
 LAST = -1
@@ -354,8 +353,8 @@ class Timezone:
             return not (local >= self._stdLoc and local < self._dstLoc)
 
 
-    def locIsSTD(self, utc: int) -> bool:
+    def locIsSTD(self, loc: int) -> bool:
         """
         Convenient wrapper to locIsDST
         """
-        return not self.locIsDST(utc)
+        return not self.locIsDST(loc)

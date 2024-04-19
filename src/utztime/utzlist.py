@@ -37,7 +37,7 @@ def getTimezone(tzname: str) -> tz.Timezone | None:
         return None
 
 
-def setTimezone(tz: tz.Timezone):
+def registerTimezone(tz: tz.Timezone):
     """
     Set/Add to the internal list of available timezones.
     This simply makes the provided timezone accessible

@@ -2,27 +2,24 @@ from utztime.tztime import TZTime
 from utztime.utimezone import Timezone
 import unittest
 import utztime.tz.us as us
+from . import util
 
 
 class test_tz_us(unittest.TestCase):
-    pass
 
 
-    # def test_America_Los_Angeles(self):
+    def test_std_dst(self):
 
-    #     # Given
-    #     tz = us.America_Los_Angeles
-    #     stdStart = TZTime.create(year=2024, month=3, day=10, hour=2, min=0, sec=0)
-    #     dstStart = TZTime.create(year=2024, month=3, day=10, hour=2, min=0, sec=0)
-    #     stdEnd = TZTime.create(year=2024, month=3, day=10, hour=2, min=0, sec=0)
+        # Given - Create UTC times that are known STD and DST for USA
+        stdTime = TZTime.create(year=2023, month=11, day=6)
+        dstTime = TZTime.create(year=2023, month=3, day=13)
 
-    #     # When
-    #     tzClone = tz.clone(name="clone", shallow=False)
-
-    #     # Then
-    #     assert tzClone._name == "clone"
-    #     assert tz is not tzClone
-    #     assert tz._dst is not tzClone._dst
-    #     assert tz._std is not tzClone._std
-
-
+        # When/Then
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_Honolulu, expectStd=True, expectDst=False)  # Phoenix does not do DST
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_Anchorage)
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_Los_Angeles)
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_Denver)
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_Phoenix, expectStd=True, expectDst=False)  # Phoenix does not do DST
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_Chicago)
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.America_New_York)
+        util.testStdAndDst(stdTime=stdTime, dstTime=dstTime, tz=us.CST, expectStd=True, expectDst=False)

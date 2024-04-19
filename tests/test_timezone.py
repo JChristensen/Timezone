@@ -1,6 +1,5 @@
 import utztime.utimezone as utimezone
 from utztime.utimezone import Timezone, TimeChangeRule
-from utztime.tztime import TZTime
 import unittest
 from .test_rules import UTC_01, UTC_02, EAST_01, EAST_02
 
@@ -168,10 +167,10 @@ class test_timezone(unittest.TestCase):
         tz = Timezone(name="MyZone", std=EST, dst=EDT)
 
         # Then
-        assert tz.utcIsDST(UTC_01) == True
-        assert tz.utcIsDST(UTC_02) == False
-        assert tz.utcIsSTD(UTC_01) == False
-        assert tz.utcIsSTD(UTC_02) == True
+        assert tz.utcIsDST(UTC_01) is True
+        assert tz.utcIsDST(UTC_02) is False
+        assert tz.utcIsSTD(UTC_01) is False
+        assert tz.utcIsSTD(UTC_02) is True
 
 
     def test_is_local_dst(self):
@@ -180,10 +179,10 @@ class test_timezone(unittest.TestCase):
         tz = Timezone(name="MyZone", std=EST, dst=EDT)
 
         # Then
-        assert tz.utcIsDST(EAST_01) == True
-        assert tz.utcIsDST(EAST_02) == False
-        assert tz.utcIsSTD(EAST_01) == False
-        assert tz.utcIsSTD(EAST_02) == True
+        assert tz.utcIsDST(EAST_01) is True
+        assert tz.utcIsDST(EAST_02) is False
+        assert tz.utcIsSTD(EAST_01) is False
+        assert tz.utcIsSTD(EAST_02) is True
 
 
     # def test_std_dst_crossover(self):

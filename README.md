@@ -99,17 +99,29 @@ pipenv run etests
 
 # Adding New TimeZones to this Library.
 I'm more than happy to accept PullRequests to add new TimeZone definitions.
-I'm Canadian Born, living in USA. So, no surprise I started with the time zones I'm familiar with.
+I'm Canadian Born, living in USA. So it's no surprise I started with the time zones I'm familiar with.
 Just follow these guidelines in creating a new TimeZone definition.
 
 Reference the standard TimeZone identifier names to figure out what directory, and filename(s) you'll be creating.
-
 [https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
-Simply find the time zone (or zones) by the `TZ Identifier` in this list.
+TimeZones in this library are grouped by country.  They are stored in a single file per country, using the country code abbreviation.
+Look in `/src/utztime/tz` for the current definition files.  `us.py` contains all USA timezone definitions.  `ca.py` for all Canadian definitions.
+The reason for keeping the definitions within separate country code files, is to streamline the memory overhead.  Instead of having your program import
+every possible definition, which will use up a good deal of memory, you can reference them in smaller chunks.
 
-## File Name
-The name of your timezone definition(s) file must be lowercase, and should be placed in a directory/file pattern similar to the onces already added.
-see `tz/america/phoenix` as an example.  It is a good example as it happens to contain 3 definitions in one file.
+In an effort to streamline memory constraints even more, there is the concept of linking a timezone to an existing full definition.
+This saves on a small amount of ram, by re-using the existing rule definition in the original timezone, and only really adding a name string.
+see `/src/utztime/tz/ca.py` for some examples of this.
 
-If you wish to add a timezone with the standard TZ identifier of `
+To create a brand new definition file, please reference `us.py` as an example of how to structure your new file.
+Defining a list of any new `Rules` at the top, then each `Timezone` definition referencing these rules.  Then any `linked` timezones.
+
+Be careful overusing existing rules and zones in linked zones.  This can lead to a cascading increase in the used memory footprint.
+The `ca.py` file references the `us.py` file for most of it's zones, as all but 2 are linked.  This is not too inefficient.
+However, the `bm.py` file references the `ca.py`, which itself references the `us.py` file, just for a single pair of `rules`.  This can be risky if not careful.
+
+Finally, create a unit-test for the new zone file, or add to the existing one.
+You only need to test zones that are not canonical zones (not linked).
+see `/tests/test_tz_us.py` and `/tests/test_tz_ca.py` for examples. There is a basic utility test function created that does the
+rudimentary testing needed for each defined zone.

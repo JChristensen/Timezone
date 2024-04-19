@@ -37,10 +37,10 @@ def zero():
 
 if __name__ == '__main__':
 
-    tzl.setTimezone(America_New_York)
-    tzl.setTimezone(America_Chicago)
-    tzl.setTimezone(America_Los_Angeles)
-    tzl.setTimezone(America_Phoenix)
+    tzl.registerTimezone(America_New_York)
+    tzl.registerTimezone(America_Chicago)
+    tzl.registerTimezone(America_Los_Angeles)
+    tzl.registerTimezone(America_Phoenix)
 
     zones()
     mathFuture()

@@ -91,7 +91,7 @@ class TZTime:
         return TZTime(t, tz)
 
 
-    def isDst(self) -> bool:
+    def isDST(self) -> bool:
         """
         Return if this time, and the given timezone, is a DST time or not.
         """
@@ -99,6 +99,13 @@ class TZTime:
             return False
         else:
             return self._tz.locIsDST(self._time)
+
+
+    def isSTD(self) -> bool:
+        """
+        Returns if this time, and the given timezone, is a STD time or not.
+        """
+        return not self.isDST()
 
 
     def __str__(self) -> str:
