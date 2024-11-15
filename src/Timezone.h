@@ -38,6 +38,7 @@ class Timezone
         Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart);
         Timezone(TimeChangeRule stdTime);
         Timezone(int address);
+        Timezone(char* key);
         time_t toLocal(time_t utc);
         time_t toLocal(time_t utc, TimeChangeRule **tcr);
         time_t toUTC(time_t local);
@@ -45,7 +46,9 @@ class Timezone
         bool locIsDST(time_t local);
         void setRules(TimeChangeRule dstStart, TimeChangeRule stdStart);
         void readRules(int address);
+        void readRules(char* key);
         void writeRules(int address);
+        void writeRules(char* key);
 
     private:
         void calcTimeChanges(int yr);

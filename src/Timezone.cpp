@@ -12,6 +12,10 @@
     #include <avr/eeprom.h>
 #endif
 
+#ifdef ESP_PLATFORM
+  #include <Preferences.h>
+#endif
+
 /*----------------------------------------------------------------------*
  * Create a Timezone object from the given time change rules.           *
  *----------------------------------------------------------------------*/
@@ -31,7 +35,7 @@ Timezone::Timezone(TimeChangeRule stdTime)
         initTimeChanges();
 }
 
-#ifdef __AVR__
+#ifdef AVR
 /*----------------------------------------------------------------------*
  * Create a Timezone object from time change rules stored in EEPROM     *
  * at the given address.                                                *
@@ -39,6 +43,13 @@ Timezone::Timezone(TimeChangeRule stdTime)
 Timezone::Timezone(int address)
 {
     readRules(address);
+}
+#endif
+
+#ifdef ESP_PLATFORM
+Timezone::Timezone(char* key)
+{
+    readRules(key);   
 }
 #endif
 
@@ -240,4 +251,44 @@ void Timezone::writeRules(int address)
     eeprom_write_block((void *) &m_std, (void *) address, sizeof(m_std));
 }
 
+#endif
+
+#ifdef ESP_PLATFORM
+/*----------------------------------------------------------------------*
+ * Read the daylight and standard time rules from Flash at              *
+ * the given key.                                                       *
+ *----------------------------------------------------------------------*/
+void Timezone::readRules(char* key)
+{
+    Preferences preferences;
+    preferences.begin("timezone", true);
+
+    // Read m_dst and m_std values from preferences
+    if (preferences.getBytes((String(key) + "_dst").c_str(), &m_dst, sizeof(m_dst)) == 0) {
+        Serial.println("Error: DST rule not found in preferences.");
+    }
+    if (preferences.getBytes((String(key) + "_std").c_str(), &m_std, sizeof(m_std)) == 0) {
+        Serial.println("Error: Standard rule not found in preferences.");
+    }
+
+    preferences.end();
+
+    initTimeChanges();
+}
+
+/*----------------------------------------------------------------------*
+ * Write the daylight and standard time rules to Flash at               *
+ * the given key.                                                       *
+ *----------------------------------------------------------------------*/
+void Timezone::writeRules(char* key)
+{
+    Preferences preferences;
+    preferences.begin("timezone", false);
+
+    // Write m_dst and m_std values to preferences
+    preferences.putBytes((String(key) + "_dst").c_str(), &m_dst, sizeof(m_dst));
+    preferences.putBytes((String(key) + "_std").c_str(), &m_std, sizeof(m_std));
+
+    preferences.end();
+}
 #endif
