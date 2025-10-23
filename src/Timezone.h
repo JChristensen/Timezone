@@ -1,22 +1,19 @@
-/*----------------------------------------------------------------------*
- * Arduino Timezone Library                                             *
- * Jack Christensen Mar 2012                                            *
- *                                                                      *
- * Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and  *
- * licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html   *
- *----------------------------------------------------------------------*/ 
+// Arduino Timezone Library
+// https://github.com/JChristensen/Timezone
+// Copyright (C) 2012-2025 by Jack Christensen and licensed under
+// GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 
 #ifndef TIMEZONE_H_INCLUDED
 #define TIMEZONE_H_INCLUDED
 #if ARDUINO >= 100
-#include <Arduino.h> 
+#include <Arduino.h>
 #else
-#include <WProgram.h> 
+#include <WProgram.h>
 #endif
 #include <TimeLib.h>    // https://github.com/PaulStoffregen/Time
 
 // convenient constants for TimeChangeRules
-enum week_t {Last, First, Second, Third, Fourth}; 
+enum week_t {Last, First, Second, Third, Fourth};
 enum dow_t {Sun=1, Mon, Tue, Wed, Thu, Fri, Sat};
 enum month_t {Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
 
@@ -25,13 +22,13 @@ enum month_t {Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
 struct TimeChangeRule
 {
     char abbrev[6];    // five chars max
-    uint8_t week;      // First, Second, Third, Fourth, or Last week of the month
-    uint8_t dow;       // day of week, 1=Sun, 2=Mon, ... 7=Sat
-    uint8_t month;     // 1=Jan, 2=Feb, ... 12=Dec
-    uint8_t hour;      // 0-23
+    int8_t week;       // First, Second, Third, Fourth, or Last week of the month
+    int8_t dow;        // day of week, 1=Sun, 2=Mon, ... 7=Sat
+    int8_t month;      // 1=Jan, 2=Feb, ... 12=Dec
+    int8_t hour;       // 0-23
     int offset;        // offset from UTC in minutes
 };
-        
+
 class Timezone
 {
     public:
