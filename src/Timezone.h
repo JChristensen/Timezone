@@ -36,7 +36,7 @@ class Timezone
         Timezone(TimeChangeRule stdTime);
         Timezone(int address);
         time_t toLocal(time_t utc);
-        time_t toLocal(time_t utc, TimeChangeRule **tcr);
+        time_t toLocal(time_t utc, TimeChangeRule** tcr);
         time_t toUTC(time_t local);
         bool utcIsDST(time_t utc);
         bool locIsDST(time_t local);

@@ -49,7 +49,7 @@ time_t Timezone::toLocal(time_t utc)
 // daylight time, as appropriate, and return a pointer to the time
 // change rule used to do the conversion. The caller must take care
 // not to alter this rule.
-time_t Timezone::toLocal(time_t utc, TimeChangeRule **tcr)
+time_t Timezone::toLocal(time_t utc, TimeChangeRule** tcr)
 {
     // recalculate the time change points if needed
     if (year(utc) != year(m_dstUTC)) calcTimeChanges(year(utc));
@@ -87,7 +87,7 @@ time_t Timezone::toLocal(time_t utc, TimeChangeRule **tcr)
 //
 // Calling this function with local times during a transition interval
 // should be avoided!
-time_t Timezone::toUTC(time_t local)
+time_t Timezone::toUTC(const time_t local)
 {
     // recalculate the time change points if needed
     if (year(local) != year(m_dstLoc)) calcTimeChanges(year(local));
