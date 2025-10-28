@@ -66,6 +66,23 @@ For the Eastern US time zone, the **TimeChangeRule**s could be defined as follow
 TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  //UTC - 4 hours
 TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   //UTC - 5 hours
 ```
+## Special Case TimeChangeRules
+A special case exists for certain locales (notably Greenland) where the combination of a "Last" rule and an early change point causes the time change to occur late on the previous day, local time. These cannot be coded as above. Instead, use a negative hour to indicate when the change occurs in the previous day. A -1 would indicate 23:00, -2 would indicate 22:00, etc.
+
+This works as follows for Greenland.
+```c++
+// West Greenland Summer Time, West Greenland Time (e.g. Nuuk)
+TimeChangeRule wgst = {"WGST", Last, Sun, Mar, -1, -60};   // UTC-1 hour
+TimeChangeRule wgt  = {"WGT", Last, Sun, Oct, 0, -120};    // UTC-2 hours
+```
+WGST is defined as beginning on the last Sunday in March at 01:00 UTC, or 23:00 Saturday WGT. For 2026, the change would happen as follows:
+```
+Sat Mar 28 22:59:58 2026 WGT
+Sat Mar 28 22:59:59 2026 WGT
+Sun Mar 29 00:00:00 2026 WGST
+Sun Mar 29 00:00:01 2026 WGST
+```
+Compare the output of the [Greenland example sketch](https://github.com/JChristensen/Timezone/blob/master/examples/Greenland/Greenland.ino) with the [tz database dump](https://github.com/JChristensen/Timezone/blob/master/examples/zdump-greenland.txt).
 
 ## Coding Timezone objects
 There are three ways to define **Timezone** objects.
@@ -82,7 +99,7 @@ By reading rules previously stored in EEPROM.  This reads both the daylight and 
 Note that **TimeChangeRule**s require 12 bytes of storage each, so the pair of rules associated with a Timezone object requires 24 bytes total.  This could possibly change in future versions of the library.  The size of a **TimeChangeRule** can be checked with `sizeof(usEDT)`.
 
 ## Timezone library methods
-Note that the `time_t` data type is defined by the Arduino Time library <TimeLib.h>. See the Time library documentation [here](https://playground.arduino.cc/Code/Time) and [here](https://www.pjrc.com/teensy/td_libs_Time.html) for additional details.
+Note that the `time_t` data type is defined by the Arduino Time library, TimeLib.h. See the Time library documentation [here](https://www.pjrc.com/teensy/td_libs_Time.html) and [here](https://github.com/PaulStoffregen/Time) for additional details.
 
 ### time_t toLocal(time_t utc);
 ##### Description

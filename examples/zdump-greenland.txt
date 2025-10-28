@@ -1,0 +1,65 @@
+$ zdump -v -c2024,2031 "America/Nuuk" "US/Eastern"
+America/Nuuk  -9223372036854775808 = NULL
+America/Nuuk  -9223372036854689408 = NULL
+America/Nuuk  Sun Mar 31 00:59:59 2024 UT = Sat Mar 30 22:59:59 2024 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 31 01:00:00 2024 UT = Sun Mar 31 00:00:00 2024 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 27 00:59:59 2024 UT = Sat Oct 26 23:59:59 2024 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 27 01:00:00 2024 UT = Sat Oct 26 23:00:00 2024 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 30 00:59:59 2025 UT = Sat Mar 29 22:59:59 2025 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 30 01:00:00 2025 UT = Sun Mar 30 00:00:00 2025 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 26 00:59:59 2025 UT = Sat Oct 25 23:59:59 2025 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 26 01:00:00 2025 UT = Sat Oct 25 23:00:00 2025 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 29 00:59:59 2026 UT = Sat Mar 28 22:59:59 2026 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 29 01:00:00 2026 UT = Sun Mar 29 00:00:00 2026 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 25 00:59:59 2026 UT = Sat Oct 24 23:59:59 2026 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 25 01:00:00 2026 UT = Sat Oct 24 23:00:00 2026 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 28 00:59:59 2027 UT = Sat Mar 27 22:59:59 2027 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 28 01:00:00 2027 UT = Sun Mar 28 00:00:00 2027 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 31 00:59:59 2027 UT = Sat Oct 30 23:59:59 2027 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 31 01:00:00 2027 UT = Sat Oct 30 23:00:00 2027 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 26 00:59:59 2028 UT = Sat Mar 25 22:59:59 2028 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 26 01:00:00 2028 UT = Sun Mar 26 00:00:00 2028 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 29 00:59:59 2028 UT = Sat Oct 28 23:59:59 2028 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 29 01:00:00 2028 UT = Sat Oct 28 23:00:00 2028 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 25 00:59:59 2029 UT = Sat Mar 24 22:59:59 2029 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 25 01:00:00 2029 UT = Sun Mar 25 00:00:00 2029 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 28 00:59:59 2029 UT = Sat Oct 27 23:59:59 2029 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 28 01:00:00 2029 UT = Sat Oct 27 23:00:00 2029 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 31 00:59:59 2030 UT = Sat Mar 30 22:59:59 2030 -02 isdst=0 gmtoff=-7200
+America/Nuuk  Sun Mar 31 01:00:00 2030 UT = Sun Mar 31 00:00:00 2030 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 27 00:59:59 2030 UT = Sat Oct 26 23:59:59 2030 -01 isdst=1 gmtoff=-3600
+America/Nuuk  Sun Oct 27 01:00:00 2030 UT = Sat Oct 26 23:00:00 2030 -02 isdst=0 gmtoff=-7200
+America/Nuuk  9223372036854689407 = NULL
+America/Nuuk  9223372036854775807 = NULL
+US/Eastern    -9223372036854775808 = NULL
+US/Eastern    -9223372036854689408 = NULL
+US/Eastern    Sun Mar 10 06:59:59 2024 UT = Sun Mar 10 01:59:59 2024 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 10 07:00:00 2024 UT = Sun Mar 10 03:00:00 2024 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  3 05:59:59 2024 UT = Sun Nov  3 01:59:59 2024 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  3 06:00:00 2024 UT = Sun Nov  3 01:00:00 2024 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar  9 06:59:59 2025 UT = Sun Mar  9 01:59:59 2025 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar  9 07:00:00 2025 UT = Sun Mar  9 03:00:00 2025 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  2 05:59:59 2025 UT = Sun Nov  2 01:59:59 2025 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  2 06:00:00 2025 UT = Sun Nov  2 01:00:00 2025 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar  8 06:59:59 2026 UT = Sun Mar  8 01:59:59 2026 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar  8 07:00:00 2026 UT = Sun Mar  8 03:00:00 2026 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  1 05:59:59 2026 UT = Sun Nov  1 01:59:59 2026 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  1 06:00:00 2026 UT = Sun Nov  1 01:00:00 2026 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 14 06:59:59 2027 UT = Sun Mar 14 01:59:59 2027 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 14 07:00:00 2027 UT = Sun Mar 14 03:00:00 2027 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  7 05:59:59 2027 UT = Sun Nov  7 01:59:59 2027 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  7 06:00:00 2027 UT = Sun Nov  7 01:00:00 2027 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 12 06:59:59 2028 UT = Sun Mar 12 01:59:59 2028 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 12 07:00:00 2028 UT = Sun Mar 12 03:00:00 2028 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  5 05:59:59 2028 UT = Sun Nov  5 01:59:59 2028 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  5 06:00:00 2028 UT = Sun Nov  5 01:00:00 2028 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 11 06:59:59 2029 UT = Sun Mar 11 01:59:59 2029 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 11 07:00:00 2029 UT = Sun Mar 11 03:00:00 2029 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  4 05:59:59 2029 UT = Sun Nov  4 01:59:59 2029 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  4 06:00:00 2029 UT = Sun Nov  4 01:00:00 2029 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 10 06:59:59 2030 UT = Sun Mar 10 01:59:59 2030 EST isdst=0 gmtoff=-18000
+US/Eastern    Sun Mar 10 07:00:00 2030 UT = Sun Mar 10 03:00:00 2030 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  3 05:59:59 2030 UT = Sun Nov  3 01:59:59 2030 EDT isdst=1 gmtoff=-14400
+US/Eastern    Sun Nov  3 06:00:00 2030 UT = Sun Nov  3 01:00:00 2030 EST isdst=0 gmtoff=-18000
+US/Eastern    9223372036854689407 = NULL
+US/Eastern    9223372036854775807 = NULL

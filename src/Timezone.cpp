@@ -150,19 +150,20 @@ void Timezone::initTimeChanges()
 // Convert the given time change rule to a time_t value for the given year.
 time_t Timezone::toTime_t(TimeChangeRule r, int yr)
 {
-    uint8_t m = r.month;     // temp copies of r.month and r.week
-    uint8_t w = r.week;
-    if (w == 0) {            // is this a "Last week" rule?
-        if (++m > 12) {      // yes, for "Last", go to the next month
+    int8_t m = r.month;     // temp copies of r.month and r.week
+    int8_t w = r.week;
+    if (w == 0) {           // is this a "Last week" rule?
+        if (++m > 12) {     // yes, for "Last", go to the next month
             m = 1;
             ++yr;
         }
-        w = 1;               // and treat as first week of next month, subtract 7 days later
+        w = 1;              // and treat as first week of next month, subtract 7 days later
     }
 
     // calculate first day of the month, or for "Last" rules, first day of the next month
     tmElements_t tm;
-    tm.Hour = r.hour;
+    // if r.hour < 0, then the time change occurs on the previous day.
+    tm.Hour = (r.hour >= 0) ? r.hour : 24 + r.hour;
     tm.Minute = 0;
     tm.Second = 0;
     tm.Day = 1;
@@ -172,6 +173,8 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr)
 
     // add offset from the first of the month to r.dow, and offset for the given week
     t += ( (r.dow - weekday(t) + 7) % 7 + (w - 1) * 7 ) * SECS_PER_DAY;
+    // move to the previous day if hour is negative
+    if (r.hour < 0) t -= SECS_PER_DAY;
     // back up a week if this is a "Last" rule
     if (r.week == 0) t -= 7 * SECS_PER_DAY;
     return t;
