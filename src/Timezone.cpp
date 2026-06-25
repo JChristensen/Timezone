@@ -1,10 +1,7 @@
-/*----------------------------------------------------------------------*
- * Arduino Timezone Library                                             *
- * Jack Christensen Mar 2012                                            *
- *                                                                      *
- * Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and  *
- * licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html   *
- *----------------------------------------------------------------------*/
+// Arduino Timezone Library
+// https://github.com/JChristensen/Timezone
+// Copyright (C) 2012-2025 by Jack Christensen and licensed under
+// GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 
 #include "Timezone.h"
 
@@ -19,19 +16,14 @@ TimeChangeRule::TimeChangeRule(const char *a, uint8_t w, uint8_t d,
     strncpy(abbrev, a, sizeof(abbrev));
 }
 
-/*----------------------------------------------------------------------*
- * Create a Timezone object from the given time change rules.           *
- *----------------------------------------------------------------------*/
+// Create a Timezone object from the given time change rules.   
 Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
     : m_dst(dstStart), m_std(stdStart)
 {
         initTimeChanges();
 }
 
-/*----------------------------------------------------------------------*
- * Create a Timezone object for a zone that does not observe            *
- * daylight time.                                                       *
- *----------------------------------------------------------------------*/
+// Create a Timezone object for a zone that does not observe daylight time.
 Timezone::Timezone(TimeChangeRule stdTime)
     : m_dst(stdTime), m_std(stdTime)
 {
@@ -39,20 +31,16 @@ Timezone::Timezone(TimeChangeRule stdTime)
 }
 
 #ifdef __AVR__
-/*----------------------------------------------------------------------*
- * Create a Timezone object from time change rules stored in EEPROM     *
- * at the given address.                                                *
- *----------------------------------------------------------------------*/
+// Create a Timezone object from time change rules stored in EEPROM
+// at the given address.
 Timezone::Timezone(int address)
 {
     readRules(address);
 }
 #endif
 
-/*----------------------------------------------------------------------*
- * Convert the given UTC time to local time, standard or                *
- * daylight time, as appropriate.                                       *
- *----------------------------------------------------------------------*/
+// Convert the given UTC time to local time, standard or daylight
+// time, as appropriate.
 time_t Timezone::toLocal(time_t utc)
 {
     // recalculate the time change points if needed
@@ -64,13 +52,11 @@ time_t Timezone::toLocal(time_t utc)
         return utc + m_std.offset * SECS_PER_MIN;
 }
 
-/*----------------------------------------------------------------------*
- * Convert the given UTC time to local time, standard or                *
- * daylight time, as appropriate, and return a pointer to the time      *
- * change rule used to do the conversion. The caller must take care     *
- * not to alter this rule.                                              *
- *----------------------------------------------------------------------*/
-time_t Timezone::toLocal(time_t utc, TimeChangeRule **tcr)
+// Convert the given UTC time to local time, standard or
+// daylight time, as appropriate, and return a pointer to the time
+// change rule used to do the conversion. The caller must take care
+// not to alter this rule.
+time_t Timezone::toLocal(time_t utc, TimeChangeRule** tcr)
 {
     // recalculate the time change points if needed
     if (year(utc) != year(m_dstUTC)) calcTimeChanges(year(utc));
@@ -85,32 +71,30 @@ time_t Timezone::toLocal(time_t utc, TimeChangeRule **tcr)
     }
 }
 
-/*----------------------------------------------------------------------*
- * Convert the given local time to UTC time.                            *
- *                                                                      *
- * WARNING:                                                             *
- * This function is provided for completeness, but should seldom be     *
- * needed and should be used sparingly and carefully.                   *
- *                                                                      *
- * Ambiguous situations occur after the Standard-to-DST and the         *
- * DST-to-Standard time transitions. When changing to DST, there is     *
- * one hour of local time that does not exist, since the clock moves    *
- * forward one hour. Similarly, when changing to standard time, there   *
- * is one hour of local times that occur twice since the clock moves    *
- * back one hour.                                                       *
- *                                                                      *
- * This function does not test whether it is passed an erroneous time   *
- * value during the Local -> DST transition that does not exist.        *
- * If passed such a time, an incorrect UTC time value will be returned. *
- *                                                                      *
- * If passed a local time value during the DST -> Local transition      *
- * that occurs twice, it will be treated as the earlier time, i.e.      *
- * the time that occurs before the transistion.                         *
- *                                                                      *
- * Calling this function with local times during a transition interval  *
- * should be avoided!                                                   *
- *----------------------------------------------------------------------*/
-time_t Timezone::toUTC(time_t local)
+// Convert the given local time to UTC time.
+//
+// WARNING:
+// This function is provided for completeness, but should seldom be
+// needed and should be used sparingly and carefully.
+//
+// Ambiguous situations occur after the Standard-to-DST and the
+// DST-to-Standard time transitions. When changing to DST, there is
+// one hour of local time that does not exist, since the clock moves
+// forward one hour. Similarly, when changing to standard time, there
+// is one hour of local times that occur twice since the clock moves
+// back one hour.
+//
+// This function does not test whether it is passed an erroneous time
+// value during the Local -> DST transition that does not exist.
+// If passed such a time, an incorrect UTC time value will be returned.
+//
+// If passed a local time value during the DST -> Local transition
+// that occurs twice, it will be treated as the earlier time, i.e.
+// the time that occurs before the transistion.
+//
+// Calling this function with local times during a transition interval
+// should be avoided!
+time_t Timezone::toUTC(const time_t local)
 {
     // recalculate the time change points if needed
     if (year(local) != year(m_dstLoc)) calcTimeChanges(year(local));
@@ -121,10 +105,8 @@ time_t Timezone::toUTC(time_t local)
         return local - m_std.offset * SECS_PER_MIN;
 }
 
-/*----------------------------------------------------------------------*
- * Determine whether the given UTC time_t is within the DST interval    *
- * or the Standard time interval.                                       *
- *----------------------------------------------------------------------*/
+// Determine whether the given UTC time_t is within the DST interval
+// or the Standard time interval.
 bool Timezone::utcIsDST(time_t utc)
 {
     // recalculate the time change points if needed
@@ -138,10 +120,8 @@ bool Timezone::utcIsDST(time_t utc)
         return !(utc >= m_stdUTC && utc < m_dstUTC);
 }
 
-/*----------------------------------------------------------------------*
- * Determine whether the given Local time_t is within the DST interval  *
- * or the Standard time interval.                                       *
- *----------------------------------------------------------------------*/
+// Determine whether the given Local time_t is within the DST interval
+// or the Standard time interval.
 bool Timezone::locIsDST(time_t local)
 {
     // recalculate the time change points if needed
@@ -155,10 +135,8 @@ bool Timezone::locIsDST(time_t local)
         return !(local >= m_stdLoc && local < m_dstLoc);
 }
 
-/*----------------------------------------------------------------------*
- * Calculate the DST and standard time change points for the given      *
- * given year as local and UTC time_t values.                           *
- *----------------------------------------------------------------------*/
+// Calculate the DST and standard time change points for the given
+// given year as local and UTC time_t values.
 void Timezone::calcTimeChanges(int yr)
 {
     m_dstLoc = toTime_t(m_dst, yr);
@@ -167,9 +145,7 @@ void Timezone::calcTimeChanges(int yr)
     m_stdUTC = m_stdLoc - m_dst.offset * SECS_PER_MIN;
 }
 
-/*----------------------------------------------------------------------*
- * Initialize the DST and standard time change points.                  *
- *----------------------------------------------------------------------*/
+// Initialize the DST and standard time change points.
 void Timezone::initTimeChanges()
 {
     m_dstLoc = 0;
@@ -178,27 +154,23 @@ void Timezone::initTimeChanges()
     m_stdUTC = 0;
 }
 
-/*----------------------------------------------------------------------*
- * Convert the given time change rule to a time_t value                 *
- * for the given year.                                                  *
- *----------------------------------------------------------------------*/
+// Convert the given time change rule to a time_t value for the given year.
 time_t Timezone::toTime_t(TimeChangeRule r, int yr)
 {
-    uint8_t m = r.month;     // temp copies of r.month and r.week
-    uint8_t w = r.week;
-    if (w == 0)              // is this a "Last week" rule?
-    {
-        if (++m > 12)        // yes, for "Last", go to the next month
-        {
+    int8_t m = r.month;     // temp copies of r.month and r.week
+    int8_t w = r.week;
+    if (w == 0) {           // is this a "Last week" rule?
+        if (++m > 12) {     // yes, for "Last", go to the next month
             m = 1;
             ++yr;
         }
-        w = 1;               // and treat as first week of next month, subtract 7 days later
+        w = 1;              // and treat as first week of next month, subtract 7 days later
     }
 
     // calculate first day of the month, or for "Last" rules, first day of the next month
     tmElements_t tm;
-    tm.Hour = r.hour;
+    // if r.hour < 0, then the time change occurs on the previous day.
+    tm.Hour = (r.hour >= 0) ? r.hour : 24 + r.hour;
     tm.Minute = 0;
     tm.Second = 0;
     tm.Day = 1;
@@ -208,14 +180,14 @@ time_t Timezone::toTime_t(TimeChangeRule r, int yr)
 
     // add offset from the first of the month to r.dow, and offset for the given week
     t += ( (r.dow - weekday(t) + 7) % 7 + (w - 1) * 7 ) * SECS_PER_DAY;
+    // move to the previous day if hour is negative
+    if (r.hour < 0) t -= SECS_PER_DAY;
     // back up a week if this is a "Last" rule
     if (r.week == 0) t -= 7 * SECS_PER_DAY;
     return t;
 }
 
-/*----------------------------------------------------------------------*
- * Read or update the daylight and standard time rules from RAM.        *
- *----------------------------------------------------------------------*/
+// Read or update the daylight and standard time rules from RAM.        *
 void Timezone::setRules(TimeChangeRule dstStart, TimeChangeRule stdStart)
 {
     m_dst = dstStart;
@@ -224,10 +196,7 @@ void Timezone::setRules(TimeChangeRule dstStart, TimeChangeRule stdStart)
 }
 
 #ifdef __AVR__
-/*----------------------------------------------------------------------*
- * Read the daylight and standard time rules from EEPROM at             *
- * the given address.                                                   *
- *----------------------------------------------------------------------*/
+// Read the daylight and standard time rules from EEPROM at the given address.
 void Timezone::readRules(int address)
 {
     eeprom_read_block((void *) &m_dst, (void *) address, sizeof(m_dst));
@@ -236,10 +205,7 @@ void Timezone::readRules(int address)
     initTimeChanges();  // force calcTimeChanges() at next conversion call
 }
 
-/*----------------------------------------------------------------------*
- * Write the daylight and standard time rules to EEPROM at              *
- * the given address.                                                   *
- *----------------------------------------------------------------------*/
+// Write the daylight and standard time rules to EEPROM at the given address.
 void Timezone::writeRules(int address)
 {
     eeprom_write_block((void *) &m_dst, (void *) address, sizeof(m_dst));

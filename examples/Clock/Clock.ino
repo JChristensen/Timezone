@@ -17,7 +17,7 @@ Timezone myTZ(myDST, mySTD);
 // lines above and uncomment the line below.
 //Timezone myTZ(100);       // assumes rules stored at EEPROM address 100
 
-TimeChangeRule *tcr;        // pointer to the time change rule, use to get TZ abbrev
+TimeChangeRule* tcr;        // pointer to the time change rule, use to get TZ abbrev
 
 void setup()
 {
@@ -40,7 +40,9 @@ void loop()
 time_t compileTime()
 {
     const time_t FUDGE(10);     // fudge factor to allow for compile time (seconds, YMMV)
-    const char *compDate = __DATE__, *compTime = __TIME__, *months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+    const char* compDate = __DATE__;
+    const char* compTime = __TIME__;
+    const char* months = "JanFebMarAprMayJunJulAugSepOctNovDec";
     char chMon[4], *m;
     tmElements_t tm;
 
@@ -68,4 +70,3 @@ void printDateTime(time_t t, const char *tz)
         hour(t), minute(t), second(t), dayShortStr(weekday(t)), day(t), m, year(t), tz);
     Serial.println(buf);
 }
-
