@@ -9,6 +9,12 @@
     #include <avr/eeprom.h>
 #endif
 
+TimeChangeRule::TimeChangeRule(const char* a, int8_t w, int8_t d, int8_t m, int8_t h, int o)
+    : week{w}, dow{d}, month{m}, hour{h}, offset{o}
+{
+    strncpy(abbrev, a, sizeof(abbrev));
+}
+
 // Create a Timezone object from the given time change rules.
 Timezone::Timezone(TimeChangeRule dstStart, TimeChangeRule stdStart)
     : m_dst(dstStart), m_std(stdStart)

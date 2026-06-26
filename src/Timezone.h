@@ -27,6 +27,9 @@ struct TimeChangeRule
     int8_t month;      // 1=Jan, 2=Feb, ... 12=Dec
     int8_t hour;       // 0-23
     int offset;        // offset from UTC in minutes
+
+    TimeChangeRule() = default;
+    TimeChangeRule(const char* abbrev, int8_t week, int8_t dow, int8_t month, int8_t hour, int offset);
 };
 
 class Timezone
