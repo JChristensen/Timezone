@@ -12,7 +12,8 @@
 TimeChangeRule::TimeChangeRule(const char* a, int8_t w, int8_t d, int8_t m, int8_t h, int o)
     : week{w}, dow{d}, month{m}, hour{h}, offset{o}
 {
-    strncpy(abbrev, a, sizeof(abbrev));
+    strncpy(abbrev, a, sizeof(abbrev) - 1);
+    abbrev[sizeof(abbrev) - 1] = '\0';
 }
 
 // Create a Timezone object from the given time change rules.
